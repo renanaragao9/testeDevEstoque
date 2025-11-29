@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price_sale', 10, 2);
-            $table->foreignId('product_type_id')->constrained('product_types')->onDelete('cascade');
+            $table->foreignId('product_type_id')->constrained('product_types');
+            $table->foreignId('mark_id')->nullable()->constrained('marks');
             $table->timestamps();
             $table->softDeletes();
         });

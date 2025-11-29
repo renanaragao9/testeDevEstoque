@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('products_specifications', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_available_use')->default(true);
+            $table->string('value');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses');
+            $table->foreignId('specification_id')->constrained('specifications')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -19,6 +19,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('products_specifications');
     }
 };

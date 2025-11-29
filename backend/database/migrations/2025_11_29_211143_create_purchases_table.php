@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('invoice_number');
             $table->date('purchase_date');
             $table->decimal('total_amount', 15, 2);
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers');
             $table->timestamps();
             $table->softDeletes();
         });

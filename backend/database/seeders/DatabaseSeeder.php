@@ -9,7 +9,16 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $seederNames = [];
+        $seederNames = [
+            ProductTypeSeeder::class,
+            SpecificationSeeder::class,
+            MarkSeeder::class,
+            ProductSeeder::class,
+            ProductSpecificationSeeder::class,
+            WarehouseSeeder::class,
+            SuppliersSeeder::class,
+            CustomersSeeder::class,
+        ];
 
         foreach ($seederNames as $seederName) {
             $exists = DB::table('seeders')

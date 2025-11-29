@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->date('sale_date');
             $table->decimal('total_amount', 15, 2);
             $table->string('status')->default('pending');
-            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
+            $table->foreignId('customer_id')->nullable()->constrained('customers');
             $table->timestamps();
             $table->softDeletes();
         });
