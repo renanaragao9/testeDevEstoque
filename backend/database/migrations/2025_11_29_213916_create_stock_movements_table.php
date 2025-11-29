@@ -1,0 +1,25 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('stock_movements', function (Blueprint $table) {
+            $table->id();
+            $table->string('type');
+            $table->string('status')->default('pending');
+            $table->foreignId('stock_id')->constrained('stocks')->onDelete('cascade');
+            $table->morphs('movimentable');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('stock_movements');
+    }
+};
