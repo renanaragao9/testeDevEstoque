@@ -22,7 +22,8 @@ class IndexMarkService
     {
         $parseRequestParams = $this->parseRequestParams($data);
         $paginate = $parseRequestParams['paginate'];
-        $search = $data['filters']['search'] ?? null;
+        $perPage = $data['per_page'] ?? 10;
+        $search = $data['search'] ?? null;
         $orderByColumn = $data['order_by_column'] ?? 'id';
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
@@ -34,7 +35,7 @@ class IndexMarkService
 
         if ($paginate) {
             return $this->orderByColumnAndDirection($query, $orderByColumn, $orderByDirection)
-                ->paginateWithSort(10)
+                ->paginateWithSort($perPage)
                 ->withQueryString();
         }
 

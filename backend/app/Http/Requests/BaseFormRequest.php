@@ -26,8 +26,8 @@ class BaseFormRequest extends FormRequest
     public function filtersDate(): array
     {
         return [
-            'filters.start_date' => ['required_with:end_date', 'date_format:Y-m-d'],
-            'filters.end_date' => ['required_with:start_date', 'date_format:Y-m-d', 'after:start_date'],
+            'start_date' => ['required_with:end_date', 'date_format:Y-m-d'],
+            'end_date' => ['required_with:start_date', 'date_format:Y-m-d', 'after:start_date'],
         ];
     }
 
@@ -43,6 +43,7 @@ class BaseFormRequest extends FormRequest
     {
         return [
             'paginate' => ['nullable', 'string', 'in:true,false,1,0'],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
         ];
     }
 
