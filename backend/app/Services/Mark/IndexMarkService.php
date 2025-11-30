@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services\ProductType;
+namespace App\Services\Mark;
 
-use App\Models\ProductType;
+use App\Models\Mark;
 use App\Traits\OrderByColumnAndDirection;
 use App\Traits\ParseRequestParams;
 
-class IndexProductTypeService
+class IndexMarkService
 {
     use OrderByColumnAndDirection;
     use ParseRequestParams;
 
-    private ProductType $productType;
+    private Mark $mark;
 
-    public function __construct(ProductType $productType)
+    public function __construct(Mark $mark)
     {
-        $this->productType = $productType;
+        $this->mark = $mark;
     }
 
     public function run($data)
@@ -26,7 +26,7 @@ class IndexProductTypeService
         $orderByColumn = $data['order_by_column'] ?? 'id';
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
-        $query = $this->productType
+        $query = $this->mark
             ->with('products')
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', '%' . $search . '%');
