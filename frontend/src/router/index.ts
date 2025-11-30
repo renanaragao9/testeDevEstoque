@@ -70,6 +70,10 @@ router.beforeEach(async (to) => {
         return { name: 'login' };
     }
 
+    if (to.matched.some((r) => r.meta.guestOnly) && authed) {
+        return { name: 'dashboard' };
+    }
+
     return true;
 });
 

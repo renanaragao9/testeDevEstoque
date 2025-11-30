@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useLayout } from '@/layout/composables/layout';
-import { Ref } from 'vue';
-import AppConfigurator from './AppConfigurator.vue';
+import { Ref, ref } from 'vue';
+import { useAuthStore } from '@/stores/auth/authStore';
+import Menu from 'primevue/menu';
 
 interface LayoutContext {
     toggleMenu: () => void;
@@ -10,6 +11,20 @@ interface LayoutContext {
 }
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout() as LayoutContext;
+const authStore = useAuthStore();
+const profileMenu = ref();
+
+const handleLogout = async () => {
+    await authStore.logout();
+};
+
+const profileMenuItems = ref([
+    {
+        label: 'Sair',
+        icon: 'pi pi-sign-out',
+        command: handleLogout
+    }
+]);
 </script>
 
 <template>
@@ -37,7 +52,7 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout() as LayoutContext
                     </g>
                 </svg>
 
-                <span>SAKAI</span>
+                <span>Produto Ninja</span>
             </router-link>
         </div>
 
@@ -46,16 +61,6 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout() as LayoutContext
                 <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
                     <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
                 </button>
-                <div class="relative">
-                    <button
-                        v-styleclass="{ selector: '@next', enterFromClass: 'hidden', enterActiveClass: 'animate-scalein', leaveToClass: 'hidden', leaveActiveClass: 'animate-fadeout', hideOnOutsideClick: true }"
-                        type="button"
-                        class="layout-topbar-action layout-topbar-action-highlight"
-                    >
-                        <i class="pi pi-palette"></i>
-                    </button>
-                    <AppConfigurator />
-                </div>
             </div>
 
             <button
@@ -67,20 +72,17 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout() as LayoutContext
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-calendar"></i>
-                        <span>Calendar</span>
-                    </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-inbox"></i>
-                        <span>Messages</span>
-                    </button>
-                    <button type="button" class="layout-topbar-action">
+                    <button type="button" class="layout-topbar-action" @click="profileMenu.value.toggle($event)">
                         <i class="pi pi-user"></i>
-                        <span>Profile</span>
+                        <span>Perfil</span>
+                    </button>
+                    <button type="button" class="layout-topbar-action" @click="handleLogout">
+                        <i class="pi pi-sign-out"></i>
+                        <span>Sair</span>
                     </button>
                 </div>
             </div>
         </div>
+        <Menu ref="profileMenu" :model="profileMenuItems" :popup="true" />
     </div>
 </template>

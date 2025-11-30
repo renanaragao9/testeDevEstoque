@@ -62,7 +62,7 @@ export class AuthService {
 
     static async getUser(): Promise<ApiResponse<Me>> {
         try {
-            const { data } = await api.get<ApiResponse<Me>>('/me');
+            const { data } = await api.get<ApiResponse<Me>>('auth/me');
             return data;
         } catch (error) {
             handleAxiosError(error, 'Erro ao buscar usuário');
