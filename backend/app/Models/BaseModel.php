@@ -23,7 +23,7 @@ class BaseModel extends Model
 
     public function tapActivity(Activity $activity): void
     {
-        $activity->causer_id = Auth::guard('sanctum')->id();
+        // $activity->causer_id = Auth::guard('sanctum')->id();
     }
 
     protected static function boot(): void
