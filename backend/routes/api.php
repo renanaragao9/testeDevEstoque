@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductTypeController;
 use App\Http\Controllers\Api\MarkController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SpecificationController;
+use App\Http\Controllers\Api\WarehouseController;
 
 Route::prefix('auth')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
@@ -49,5 +50,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{specification}', [SpecificationController::class, 'show']);
         Route::put('/{specification}', [SpecificationController::class, 'update']);
         Route::delete('/{specification}', [SpecificationController::class, 'destroy']);
+    });
+
+    Route::prefix('warehouses')->group(function (): void {
+        Route::get('/', [WarehouseController::class, 'index']);
+        Route::post('/', [WarehouseController::class, 'store']);
+        Route::get('/{warehouse}', [WarehouseController::class, 'show']);
+        Route::put('/{warehouse}', [WarehouseController::class, 'update']);
+        Route::delete('/{warehouse}', [WarehouseController::class, 'destroy']);
     });
 });
