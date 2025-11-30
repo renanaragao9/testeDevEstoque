@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\MarkController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SpecificationController;
 use App\Http\Controllers\Api\WarehouseController;
+use App\Http\Controllers\Api\StockController;
 
 Route::prefix('auth')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
@@ -58,5 +59,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{warehouse}', [WarehouseController::class, 'show']);
         Route::put('/{warehouse}', [WarehouseController::class, 'update']);
         Route::delete('/{warehouse}', [WarehouseController::class, 'destroy']);
+    });
+
+    Route::prefix('stocks')->group(function (): void {
+        Route::get('/', [StockController::class, 'index']);
+        Route::post('/', [StockController::class, 'store']);
+        Route::get('/{stock}', [StockController::class, 'show']);
+        Route::put('/{stock}', [StockController::class, 'update']);
+        Route::delete('/{stock}', [StockController::class, 'destroy']);
     });
 });
