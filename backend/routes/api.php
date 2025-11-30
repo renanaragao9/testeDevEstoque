@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductTypeController;
 use App\Http\Controllers\Api\MarkController;
+use App\Http\Controllers\Api\ProductController;
 
 Route::prefix('auth')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
@@ -31,5 +32,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{mark}', [MarkController::class, 'show']);
         Route::put('/{mark}', [MarkController::class, 'update']);
         Route::delete('/{mark}', [MarkController::class, 'destroy']);
+    });
+
+    Route::prefix('products')->group(function (): void {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::get('/{product}', [ProductController::class, 'show']);
+        Route::put('/{product}', [ProductController::class, 'update']);
+        Route::delete('/{product}', [ProductController::class, 'destroy']);
     });
 });
