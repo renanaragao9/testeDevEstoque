@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $seederNames = [
+            UserSeeder::class,
             ProductTypeSeeder::class,
             SpecificationSeeder::class,
             MarkSeeder::class,

@@ -1,8 +1,10 @@
 import type { App as VueApp } from 'vue';
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
 import App from './App.vue';
 import router from './router/index';
+import { useAuthStore } from '@/stores/auth/authStore';
 
 import Aura from '@primeuix/themes/aura';
 import PrimeVue from 'primevue/config';
@@ -12,7 +14,9 @@ import ToastService from 'primevue/toastservice';
 import '@/assets/styles.scss';
 
 const app: VueApp = createApp(App);
+const pinia = createPinia();
 
+app.use(pinia);
 app.use(router);
 app.use(PrimeVue, {
     theme: {
@@ -24,5 +28,9 @@ app.use(PrimeVue, {
 });
 app.use(ToastService);
 app.use(ConfirmationService);
+
+// Inicializar autenticação
+const authStore = useAuthStore();
+authStore.initializeAuth();
 
 app.mount('#app');
