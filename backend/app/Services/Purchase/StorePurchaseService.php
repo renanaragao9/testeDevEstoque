@@ -18,12 +18,13 @@ class StorePurchaseService
             $purchase = Purchase::create($data);
 
             foreach ($items as $item) {
-                $stock = Stock::firstOrCreate([
-                    'product_id' => $item['product_id'],
-                    'warehouse_id' => $item['warehouse_id'],
-                ]);
-
                 for ($i = 0; $i < $item['quantity']; $i++) {
+                    $stock = Stock::create([
+                        'product_id' => $item['product_id'],
+                        'warehouse_id' => $item['warehouse_id'],
+                        'is_available_use' => true,
+                    ]);
+
                     StockMovement::create([
                         'type' => 'in',
                         'status' => 'completed',

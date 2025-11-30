@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\SaleController;
 
 Route::prefix('auth')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
@@ -94,5 +95,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{customer}', [CustomerController::class, 'show']);
         Route::put('/{customer}', [CustomerController::class, 'update']);
         Route::delete('/{customer}', [CustomerController::class, 'destroy']);
+    });
+
+    Route::prefix('sales')->group(function (): void {
+        Route::get('/', [SaleController::class, 'index']);
+        Route::post('/', [SaleController::class, 'store']);
+        Route::get('/{sale}', [SaleController::class, 'show']);
+        Route::put('/{sale}', [SaleController::class, 'update']);
+        Route::delete('/{sale}', [SaleController::class, 'destroy']);
     });
 });
