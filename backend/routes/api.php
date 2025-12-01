@@ -85,7 +85,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/', [PurchaseController::class, 'index']);
         Route::post('/', [PurchaseController::class, 'store']);
         Route::get('/{purchase}', [PurchaseController::class, 'show']);
-        Route::put('/{purchase}', [PurchaseController::class, 'update']);
         Route::delete('/{purchase}', [PurchaseController::class, 'destroy']);
     });
 

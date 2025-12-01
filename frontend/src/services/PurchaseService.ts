@@ -58,14 +58,6 @@ export class PurchaseService {
         return response.data;
     }
 
-    static async updatePurchase(id: number, purchaseData: Partial<PurchasePayload>): Promise<{ data: Purchase; message: string }> {
-        const payload = this.preparePayload(purchaseData);
-        const response = await api.put<{ data: Purchase; message: string }>(`${this.BASE_URL}/${id}`, payload, {
-            headers: this.getHeaders()
-        });
-        return response.data;
-    }
-
     static async deletePurchase(id: number): Promise<{ message: string }> {
         const response = await api.delete<{ message: string }>(`${this.BASE_URL}/${id}`);
         return response.data;

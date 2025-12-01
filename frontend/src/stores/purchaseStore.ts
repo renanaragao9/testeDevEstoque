@@ -66,23 +66,6 @@ export const usePurchaseStore = defineStore('purchase', () => {
         }
     }
 
-    async function updatePurchase(id: number, payload: PurchasePayload) {
-        loading.value = true;
-        error.value = null;
-        try {
-            const result = await PurchaseService.updatePurchase(id, payload);
-            const index = purchases.value.findIndex((purchase) => purchase.id === id);
-            if (index !== -1) {
-                purchases.value[index] = result.data;
-            }
-        } catch (err) {
-            error.value = handleApiError(err, 'Erro ao atualizar compra');
-            throw err;
-        } finally {
-            loading.value = false;
-        }
-    }
-
     async function deletePurchase(id: number) {
         loading.value = true;
         error.value = null;
@@ -134,7 +117,6 @@ export const usePurchaseStore = defineStore('purchase', () => {
         purchaseOptions,
         fetchPurchases,
         createPurchase,
-        updatePurchase,
         deletePurchase,
         clearPurchase,
         addPurchaseItem,

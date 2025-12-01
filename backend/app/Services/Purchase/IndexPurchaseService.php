@@ -28,7 +28,7 @@ class IndexPurchaseService
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
         $query = $this->purchase
-            ->with('supplier', 'stockMovements')
+            ->with('supplier', 'stockMovements', 'stockMovements.stock.product', 'stockMovements.stock.warehouse')
             ->when($search, function ($query) use ($search) {
                 return $query->where('invoice_number', 'like', '%' . $search . '%')
                     ->orWhereHas('supplier', function ($q) use ($search) {

@@ -97,13 +97,8 @@ async function savePurchase(): Promise<void> {
                 }))
             };
 
-            if (purchaseStore.purchase.id) {
-                await purchaseStore.updatePurchase(purchaseStore.purchase.id, payload);
-                toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Compra atualizada com sucesso', life: 3000 });
-            } else {
-                await purchaseStore.createPurchase(payload);
-                toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Compra criada com sucesso', life: 3000 });
-            }
+            await purchaseStore.createPurchase(payload);
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Compra criada com sucesso', life: 3000 });
 
             purchaseDialog.value = false;
             purchaseStore.clearPurchase();
@@ -122,10 +117,10 @@ async function deletePurchase(): Promise<void> {
             await purchaseStore.deletePurchase(purchaseStore.purchase.id);
             deletePurchaseDialog.value = false;
             purchaseStore.clearPurchase();
-            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Compra deletada com sucesso', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Compra cancelada com sucesso', life: 3000 });
             await loadPurchases();
         } catch {
-            toast.add({ severity: 'error', summary: 'Erro', detail: purchaseStore.error || 'Erro ao deletar compra', life: 3000 });
+            toast.add({ severity: 'error', summary: 'Erro', detail: purchaseStore.error || 'Erro ao cancelar compra', life: 3000 });
         }
     }
 }
@@ -140,21 +135,6 @@ function openNew(): void {
 function hideDialog(): void {
     purchaseDialog.value = false;
     submitted.value = false;
-}
-
-function editPurchase(purchaseData: Purchase): void {
-    purchaseStore.purchase = { ...purchaseData };
-    if (purchaseData.stockMovements) {
-        purchaseStore.purchaseItems = purchaseData.stockMovements.map((movement) => ({
-            id: movement.id,
-            productId: movement.productId,
-            warehouseId: movement.warehouseId,
-            quantity: movement.quantity
-        }));
-    } else {
-        purchaseStore.addPurchaseItem();
-    }
-    purchaseDialog.value = true;
 }
 
 function confirmDeletePurchase(purchaseData: Purchase): void {
@@ -252,8 +232,7 @@ function formatDate(dateString: string): string {
 
                         <Column>
                             <template #body="slotProps">
-                                <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editPurchase(slotProps.data)" />
-                                <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeletePurchase(slotProps.data)" />
+                                <Button label="Cancelar" icon="pi pi-times" outlined rounded severity="danger" @click="confirmDeletePurchase(slotProps.data)" />
                             </template>
                         </Column>
                     </DataTable>
@@ -271,7 +250,15 @@ function formatDate(dateString: string): string {
 
                 <div>
                     <label for="purchaseDate" class="font-bold mb-3">Data da Compra <span class="text-red-500">*</span></label>
-                    <Calendar id="purchaseDate" v-model="purchaseStore.purchase.purchaseDate" dateFormat="dd/mm/yy" :invalid="submitted && !purchaseStore.purchase.purchaseDate" placeholder="Selecione a data" fluid />
+                    <Calendar
+                        id="purchaseDate"
+                        :modelValue="purchaseStore.purchase.purchaseDate ? new Date(purchaseStore.purchase.purchaseDate) : null"
+                        @update:modelValue="(date: Date | null) => (purchaseStore.purchase.purchaseDate = date ? date.toISOString().split('T')[0] : '')"
+                        dateFormat="dd/mm/yy"
+                        :invalid="submitted && !purchaseStore.purchase.purchaseDate"
+                        placeholder="Selecione a data"
+                        fluid
+                    />
                     <small v-if="submitted && !purchaseStore.purchase.purchaseDate" class="text-red-500">Data da compra é obrigatória.</small>
                 </div>
 
@@ -355,18 +342,18 @@ function formatDate(dateString: string): string {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deletePurchaseDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deletePurchaseDialog" modal header="Confirmar Cancelamento" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="purchaseStore.purchase"
-                    >Tem certeza de que deseja excluir a compra <b>{{ purchaseStore.purchase.invoiceNumber }}</b
+                    >Tem certeza de que deseja cancelar a compra <b>{{ purchaseStore.purchase.invoiceNumber }}</b
                     >?</span
                 >
             </div>
 
             <template #footer>
                 <Button label="Não" icon="pi pi-times" text @click="deletePurchaseDialog = false" />
-                <Button label="Sim" icon="pi pi-check" text @click="deletePurchase" />
+                <Button label="Sim, cancelar" icon="pi pi-check" text @click="deletePurchase" />
             </template>
         </Dialog>
     </div>

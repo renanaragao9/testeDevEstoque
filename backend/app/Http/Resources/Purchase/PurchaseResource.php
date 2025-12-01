@@ -11,14 +11,14 @@ class PurchaseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'invoice_number' => $this->invoice_number,
-            'purchase_date' => $this->purchase_date,
-            'total_amount' => $this->total_amount,
-            'supplier_id' => $this->supplier_id,
+            'invoiceNumber' => $this->invoice_number,
+            'purchaseDate' => $this->purchase_date ? $this->purchase_date->format('Y-m-d') : null,
+            'totalAmount' => (float) $this->total_amount,
+            'supplierId' => $this->supplier_id,
             'supplier' => $this->whenLoaded('supplier'),
-            'stock_movements' => $this->whenLoaded('stockMovements'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'stockMovements' => $this->whenLoaded('stockMovements'),
+            'createdAt' => $this->created_at ? $this->created_at->toISOString() : null,
+            'updatedAt' => $this->updated_at ? $this->updated_at->toISOString() : null,
         ];
     }
 }

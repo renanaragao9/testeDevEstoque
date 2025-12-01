@@ -20,6 +20,12 @@ class Purchase extends BaseModel
         'total_amount' => 'decimal:2',
     ];
 
+    protected $with = [
+        'supplier',
+        'stockMovements.stock.product',
+        'stockMovements.stock.warehouse'
+    ];
+
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
