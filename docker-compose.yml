@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: testeDev_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: estoqueNinja
+      MYSQL_ROOT_PASSWORD: estoque
+      MYSQL_PASSWORD: ninja
+      MYSQL_USER: dev
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - testeDev_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: testeDev_backend
+    restart: unless-stopped
+    working_dir: /var/www
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - mysql
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: estoqueNinja
+      DB_USERNAME: dev
+      DB_PASSWORD: ninja
+    networks:
+      - testeDev_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: testeDev_frontend
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - testeDev_network
+
+networks:
+  testeDev_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
