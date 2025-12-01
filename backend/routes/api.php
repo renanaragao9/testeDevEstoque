@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     Route::prefix('products')->group(function (): void {
         Route::get('/', [ProductController::class, 'index']);
+        Route::get('/products-sales', [ProductController::class, 'productsSales']);
         Route::post('/', [ProductController::class, 'store']);
         Route::get('/{product}', [ProductController::class, 'show']);
         Route::put('/{product}', [ProductController::class, 'update']);

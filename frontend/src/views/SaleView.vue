@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useSaleStore } from '@/stores/saleStore';
 import { useCustomerStore } from '@/stores/customerStore';
 import { useProductStore } from '@/stores/productStore';
@@ -23,9 +23,20 @@ const expandedRows = ref({});
 
 const toast = useToast();
 
+watch(
+    () => saleStore.saleItems,
+    () => {
+        saleStore.sale.totalAmount = saleStore.saleItems.reduce((sum, item) => {
+            const product = productStore.productsSales.find((p) => p.id === item.productId);
+            return sum + (item.quantity || 0) * (product?.price || 0);
+        }, 0);
+    },
+    { deep: true }
+);
+
 onMounted(async () => {
     try {
-        await Promise.all([loadSales(), customerStore.fetchCustomers({ paginate: false }), productStore.fetchProducts({ paginate: false })]);
+        await Promise.all([loadSales(), customerStore.fetchCustomers({ paginate: false }), productStore.fetchProductsForSales({ paginate: false })]);
     } catch {
         toast.add({
             severity: 'error',
@@ -324,7 +335,16 @@ function onRowCollapse(): void {}
                 <div v-for="(item, index) in saleStore.saleItems" :key="index" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end mb-4 p-4 border rounded">
                     <div>
                         <label :for="`product-${index}`" class="font-bold mb-3">Produto <span class="text-red-500">*</span></label>
-                        <Dropdown :id="`product-${index}`" v-model="item.productId" :options="productStore.productOptions" optionLabel="label" optionValue="value" :invalid="submitted && !item.productId" placeholder="Selecione um produto" fluid />
+                        <Dropdown
+                            :id="`product-${index}`"
+                            v-model="item.productId"
+                            :options="productStore.productSalesOptions"
+                            optionLabel="label"
+                            optionValue="value"
+                            :invalid="submitted && !item.productId"
+                            placeholder="Selecione um produto"
+                            fluid
+                        />
                     </div>
 
                     <div>

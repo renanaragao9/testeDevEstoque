@@ -7,9 +7,11 @@ use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
+use App\Http\Resources\Product\ProductSalesResource;
 use App\Models\Product;
 use App\Services\Product\DeleteProductService;
 use App\Services\Product\IndexProductService;
+use App\Services\Product\ProductsSalesService;
 use App\Services\Product\StoreProductService;
 use App\Services\Product\UpdateProductService;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +27,16 @@ class ProductController extends BaseController
         $products = $indexProductService->run($data);
 
         return ProductResource::collection($products);
+    }
+
+    public function productsSales(
+        IndexProductRequest $indexProductRequest,
+        ProductsSalesService $productsSalesService,
+    ): AnonymousResourceCollection {
+        $data = $indexProductRequest->validated();
+        $products = $productsSalesService->run($data);
+
+        return ProductSalesResource::collection($products);
     }
 
     public function show(Product $product): JsonResponse

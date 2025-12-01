@@ -5,6 +5,7 @@ namespace App\Services\Sale;
 use App\Models\Sale;
 use App\Models\Stock;
 use App\Models\StockMovement;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class StoreSaleService
@@ -16,12 +17,13 @@ class StoreSaleService
             unset($data['items']);
 
             foreach ($items as $item) {
+                $product = Product::find($item['product_id']);
                 $availableStock = Stock::where('product_id', $item['product_id'])
                     ->where('is_available_use', true)
                     ->count();
 
                 if ($availableStock < $item['quantity']) {
-                    throw new \Exception('Stock insuficiente para o produto ' . $item['product_id'] . '. Disponível: ' . $availableStock . ', necessário: ' . $item['quantity']);
+                    throw new \Exception('Estoque insuficiente para o produto ' . $product->name . '. Disponível: ' . $availableStock . ', necessário: ' . $item['quantity']);
                 }
             }
 

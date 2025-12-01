@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import type { Product, ProductPayload, SpecificationSync } from '@/types/product';
+import type { Product, ProductPayload, SpecificationSync, ProductSales } from '@/types/product';
 import type { BaseFilters } from '@/types/global/filters';
 import { ProductService } from '@/services/ProductService';
 import { handleApiError } from '@/utils/errorHandler';
@@ -10,6 +10,7 @@ export const useProductStore = defineStore('product', () => {
     const error = ref<string | null>(null);
     const productSpecifications = ref<SpecificationSync[]>([]);
     const products = ref<Product[]>([]);
+    const productsSales = ref<ProductSales[]>([]);
     const product = ref<Product>({
         id: 0,
         name: '',
@@ -33,6 +34,13 @@ export const useProductStore = defineStore('product', () => {
         }))
     );
 
+    const productSalesOptions = computed(() =>
+        productsSales.value.map((product) => ({
+            label: `${product.name} (Estoque: ${product.total_in_stock})`,
+            value: product.id
+        }))
+    );
+
     async function fetchProducts(filters?: BaseFilters) {
         loading.value = true;
         error.value = null;
@@ -48,6 +56,21 @@ export const useProductStore = defineStore('product', () => {
             };
         } catch (err) {
             error.value = handleApiError(err, 'Erro ao carregar produtos');
+        } finally {
+            loading.value = false;
+        }
+    }
+
+    async function fetchProductsForSales(filters?: BaseFilters) {
+        loading.value = true;
+        error.value = null;
+        try {
+            const response = await ProductService.getProductsForSales(filters);
+            productsSales.value = response.data;
+            return response;
+        } catch (err) {
+            error.value = handleApiError(err, 'Erro ao carregar produtos para venda');
+            throw err;
         } finally {
             loading.value = false;
         }
@@ -158,13 +181,16 @@ export const useProductStore = defineStore('product', () => {
 
     return {
         products,
+        productsSales,
         product,
         loading,
         error,
         pagination,
         productOptions,
+        productSalesOptions,
         productSpecifications,
         fetchProducts,
+        fetchProductsForSales,
         createProduct,
         updateProduct,
         deleteProduct,

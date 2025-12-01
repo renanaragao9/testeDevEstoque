@@ -1,5 +1,5 @@
 import api from '@/config/api';
-import type { Product, ProductPayload, ProductResponse } from '@/types/product';
+import type { Product, ProductPayload, ProductResponse, ProductSalesResponse } from '@/types/product';
 import type { BaseFilters } from '@/types/global/filters';
 
 export class ProductService {
@@ -29,6 +29,23 @@ export class ProductService {
         const url = queryString ? `${this.BASE_URL}?${queryString}` : this.BASE_URL;
 
         const response = await api.get<ProductResponse>(url);
+        return response.data;
+    }
+
+    static async getProductsForSales(filters: Partial<BaseFilters> = {}): Promise<ProductSalesResponse> {
+        const params = new URLSearchParams();
+
+        if (filters.search) params.append('search', filters.search);
+        if (filters.orderByColumn) params.append('order_by_column', filters.orderByColumn);
+        if (filters.orderByDirection) params.append('order_by_direction', filters.orderByDirection);
+        if (filters.perPage) params.append('per_page', filters.perPage.toString());
+        if (filters.page) params.append('page', filters.page.toString());
+        if (filters.paginate !== undefined) params.append('paginate', filters.paginate ? '1' : '0');
+
+        const queryString = params.toString();
+        const url = queryString ? `${this.BASE_URL}/products-sales?${queryString}` : `${this.BASE_URL}/products-sales`;
+
+        const response = await api.get<ProductSalesResponse>(url);
         return response.data;
     }
 
