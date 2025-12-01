@@ -34,6 +34,10 @@ const model = ref<MenuItem[]>([
             { label: 'Fornecedores', icon: 'pi pi-fw pi-users', to: '/suppliers' },
             { label: 'Compras', icon: 'pi pi-fw pi-shopping-cart', to: '/purchases' }
         ]
+    },
+    {
+        label: 'Vendas',
+        items: [{ label: 'Clientes', icon: 'pi pi-fw pi-user', to: '/customers' }]
     }
 ]);
 </script>
