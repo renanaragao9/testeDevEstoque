@@ -31,7 +31,8 @@ const model = ref<MenuItem[]>([
         label: 'Estoque',
         items: [
             { label: 'Armazéns', icon: 'pi pi-fw pi-building', to: '/warehouses' },
-            { label: 'Fornecedores', icon: 'pi pi-fw pi-users', to: '/suppliers' }
+            { label: 'Fornecedores', icon: 'pi pi-fw pi-users', to: '/suppliers' },
+            { label: 'Compras', icon: 'pi pi-fw pi-shopping-cart', to: '/purchases' }
         ]
     }
 ]);
