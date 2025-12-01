@@ -3,7 +3,6 @@ export interface Sale {
     invoiceNumber: string;
     saleDate: string;
     totalAmount: number;
-    status: 'pending' | 'completed' | 'cancelled';
     customerId?: number;
     customer?: {
         id: number;
@@ -29,7 +28,6 @@ export interface SalePayload {
     invoiceNumber: string;
     saleDate: string;
     totalAmount: number;
-    status?: 'pending' | 'completed' | 'cancelled';
     customerId?: number;
     items: {
         productId: number;

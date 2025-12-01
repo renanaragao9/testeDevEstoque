@@ -14,7 +14,6 @@ class SaleResource extends JsonResource
             'invoice_number' => $this->invoice_number,
             'sale_date' => $this->sale_date,
             'total_amount' => $this->total_amount,
-            'status' => $this->status,
             'customer_id' => $this->customer_id,
             'customer' => $this->whenLoaded('customer'),
             'stock_movements' => $this->whenLoaded('stockMovements'),

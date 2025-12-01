@@ -14,7 +14,6 @@ export const useSaleStore = defineStore('sale', () => {
         invoiceNumber: '',
         saleDate: new Date().toISOString().split('T')[0],
         totalAmount: 0,
-        status: 'pending',
         customerId: undefined
     });
     const saleItems = ref<SaleItem[]>([]);
@@ -32,12 +31,6 @@ export const useSaleStore = defineStore('sale', () => {
             value: sale.id
         }))
     );
-
-    const statusOptions = [
-        { label: 'Pendente', value: 'pending' },
-        { label: 'Concluída', value: 'completed' },
-        { label: 'Cancelada', value: 'cancelled' }
-    ];
 
     async function fetchSales(filters?: BaseFilters) {
         loading.value = true;
@@ -93,7 +86,6 @@ export const useSaleStore = defineStore('sale', () => {
             invoiceNumber: '',
             saleDate: new Date().toISOString().split('T')[0],
             totalAmount: 0,
-            status: 'pending',
             customerId: undefined
         };
         saleItems.value = [];
@@ -122,7 +114,6 @@ export const useSaleStore = defineStore('sale', () => {
         error,
         pagination,
         saleOptions,
-        statusOptions,
         fetchSales,
         createSale,
         deleteSale,

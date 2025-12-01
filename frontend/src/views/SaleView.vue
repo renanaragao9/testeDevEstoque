@@ -87,7 +87,6 @@ async function saveSale(): Promise<void> {
                 invoiceNumber: saleStore.sale.invoiceNumber,
                 saleDate: saleStore.sale.saleDate,
                 totalAmount: saleStore.sale.totalAmount,
-                status: saleStore.sale.status,
                 customerId: saleStore.sale.customerId,
                 items: saleStore.saleItems.map((item) => ({
                     productId: item.productId,
@@ -160,32 +159,6 @@ function formatCurrency(value: number): string {
 function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('pt-BR');
 }
-
-function getStatusSeverity(status: string): 'success' | 'warning' | 'danger' | 'info' {
-    switch (status) {
-        case 'completed':
-            return 'success';
-        case 'pending':
-            return 'warning';
-        case 'cancelled':
-            return 'danger';
-        default:
-            return 'info';
-    }
-}
-
-function getStatusLabel(status: string): string {
-    switch (status) {
-        case 'completed':
-            return 'Concluída';
-        case 'pending':
-            return 'Pendente';
-        case 'cancelled':
-            return 'Cancelada';
-        default:
-            return status;
-    }
-}
 </script>
 
 <template>
@@ -233,35 +206,30 @@ function getStatusLabel(status: string): string {
                             </div>
                         </template>
 
-                        <Column field="invoiceNumber" header="Nº Fatura" sortable>
+                        <Column field="invoice_number" header="Nº Fatura" sortable>
                             <template #body="slotProps">
-                                {{ slotProps.data.invoiceNumber }}
+                                {{ slotProps.data.invoice_number }}
                             </template>
                         </Column>
-                        <Column field="saleDate" header="Data" sortable>
+                        <Column field="sale_date" header="Data" sortable>
                             <template #body="slotProps">
-                                {{ formatDate(slotProps.data.saleDate) }}
+                                {{ formatDate(slotProps.data.sale_date) }}
                             </template>
                         </Column>
                         <Column field="customer.name" header="Cliente" sortable>
                             <template #body="slotProps">
-                                {{ slotProps.data.customer?.name || 'Sem cliente' }}
+                                {{ slotProps.data.customer?.name || '-' }}
                             </template>
                         </Column>
-                        <Column field="status" header="Status" sortable>
+                        <Column field="total_amount" header="Total" sortable>
                             <template #body="slotProps">
-                                <Tag :value="getStatusLabel(slotProps.data.status)" :severity="getStatusSeverity(slotProps.data.status)" />
-                            </template>
-                        </Column>
-                        <Column field="totalAmount" header="Total" sortable>
-                            <template #body="slotProps">
-                                {{ formatCurrency(slotProps.data.totalAmount) }}
+                                {{ formatCurrency(slotProps.data.total_amount) }}
                             </template>
                         </Column>
 
                         <Column>
                             <template #body="slotProps">
-                                <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteSale(slotProps.data)" />
+                                <Button label="Cancelar" icon="pi pi-times" outlined rounded severity="danger" @click="confirmDeleteSale(slotProps.data)" />
                             </template>
                         </Column>
                     </DataTable>
@@ -279,13 +247,16 @@ function getStatusLabel(status: string): string {
 
                 <div>
                     <label for="saleDate" class="font-bold mb-3">Data da Venda <span class="text-red-500">*</span></label>
-                    <Calendar id="saleDate" v-model="saleStore.sale.saleDate" dateFormat="dd/mm/yy" :invalid="submitted && !saleStore.sale.saleDate" placeholder="Selecione a data" fluid />
+                    <Calendar
+                        id="saleDate"
+                        :modelValue="saleStore.sale.saleDate ? new Date(saleStore.sale.saleDate) : null"
+                        @update:modelValue="(date: Date | null) => (saleStore.sale.saleDate = date ? date.toISOString().split('T')[0] : '')"
+                        dateFormat="dd/mm/yy"
+                        :invalid="submitted && !saleStore.sale.saleDate"
+                        placeholder="Selecione a data"
+                        fluid
+                    />
                     <small v-if="submitted && !saleStore.sale.saleDate" class="text-red-500">Data da venda é obrigatória.</small>
-                </div>
-
-                <div>
-                    <label for="status" class="font-bold mb-3">Status</label>
-                    <Dropdown id="status" v-model="saleStore.sale.status" :options="saleStore.statusOptions" optionLabel="label" optionValue="value" placeholder="Selecione um status" fluid />
                 </div>
 
                 <div>

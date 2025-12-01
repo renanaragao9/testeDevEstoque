@@ -209,14 +209,14 @@ function formatDate(dateString: string): string {
                             </div>
                         </template>
 
-                        <Column field="invoiceNumber" header="Nº Fatura" sortable>
+                        <Column field="invoice_number" header="Nº Fatura" sortable>
                             <template #body="slotProps">
-                                {{ slotProps.data.invoiceNumber }}
+                                {{ slotProps.data.invoice_number }}
                             </template>
                         </Column>
-                        <Column field="purchaseDate" header="Data" sortable>
+                        <Column field="purchase_date" header="Data" sortable>
                             <template #body="slotProps">
-                                {{ formatDate(slotProps.data.purchaseDate) }}
+                                {{ formatDate(slotProps.data.purchase_date) }}
                             </template>
                         </Column>
                         <Column field="supplier.name" header="Fornecedor" sortable>
@@ -224,9 +224,9 @@ function formatDate(dateString: string): string {
                                 {{ slotProps.data.supplier?.name || '-' }}
                             </template>
                         </Column>
-                        <Column field="totalAmount" header="Total" sortable>
+                        <Column field="total_amount" header="Total" sortable>
                             <template #body="slotProps">
-                                {{ formatCurrency(slotProps.data.totalAmount) }}
+                                {{ formatCurrency(slotProps.data.total_amount) }}
                             </template>
                         </Column>
 

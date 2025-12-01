@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('invoice_number');
             $table->date('sale_date');
             $table->decimal('total_amount', 15, 2);
-            $table->string('status')->default('pending');
             $table->foreignId('customer_id')->nullable()->constrained('customers');
             $table->timestamps();
             $table->softDeletes();

@@ -13,7 +13,7 @@ class StoreSaleRequest extends BaseFormRequest
             'invoice_number' => ['required', 'string', 'unique:sales,invoice_number'],
             'sale_date' => ['required', 'date'],
             'total_amount' => ['required', 'numeric', 'min:0'],
-            'status' => ['sometimes', 'string', 'in:pending,completed,cancelled'],
+
             'customer_id' => ['nullable', 'exists:customers,id'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => ['required', 'exists:products,id'],
@@ -32,8 +32,7 @@ class StoreSaleRequest extends BaseFormRequest
             'total_amount.required' => 'O valor total é obrigatório.',
             'total_amount.numeric' => 'O valor total deve ser um número.',
             'total_amount.min' => 'O valor total deve ser maior ou igual a 0.',
-            'status.string' => 'O status deve ser um texto.',
-            'status.in' => 'O status deve ser pending, completed ou cancelled.',
+
             'customer_id.exists' => 'O cliente selecionado não existe.',
             'items.required' => 'Os itens da venda são obrigatórios.',
             'items.array' => 'Os itens devem ser uma lista.',

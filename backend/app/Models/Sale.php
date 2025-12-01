@@ -12,7 +12,6 @@ class Sale extends BaseModel
         'invoice_number',
         'sale_date',
         'total_amount',
-        'status',
         'customer_id',
     ];
 

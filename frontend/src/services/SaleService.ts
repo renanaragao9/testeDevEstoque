@@ -12,7 +12,6 @@ export class SaleService {
             invoice_number: saleData.invoiceNumber,
             sale_date: saleData.saleDate,
             total_amount: saleData.totalAmount,
-            status: saleData.status || 'pending',
             customer_id: saleData.customerId || null,
             items:
                 saleData.items?.map((item) => ({
