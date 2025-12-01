@@ -13,7 +13,12 @@ class WarehouseResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'location' => $this->location,
-            'stocks' => $this->whenLoaded('stocks'),
+            'totalStock' => $this->stocks->where('is_available_use', true)->count(),
+            'totalStockValue' => $this->stocks
+                ->where('is_available_use', true)
+                ->sum(function ($stock) {
+                    return $stock->product ? (float) $stock->product->price_sale : 0.0;
+                }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

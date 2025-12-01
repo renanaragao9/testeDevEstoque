@@ -128,6 +128,11 @@ function confirmDeleteWarehouse(warehouseData: Warehouse): void {
     warehouseStore.warehouse = warehouseData;
     deleteWarehouseDialog.value = true;
 }
+
+function formatCurrency(value: number | undefined): string {
+    if (!value) return '0,00';
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 </script>
 
 <template>
@@ -184,6 +189,14 @@ function confirmDeleteWarehouse(warehouseData: Warehouse): void {
                             <template #body="slotProps">
                                 {{ slotProps.data.location }}
                             </template>
+                        </Column>
+                        <Column field="totalStock" header="Total Estoque" sortable>
+                            <template #body="slotProps">
+                                {{ slotProps.data.totalStock || 0 }}
+                            </template>
+                        </Column>
+                        <Column field="totalStockValue" header="Valor Total" sortable>
+                            <template #body="slotProps"> R$ {{ formatCurrency(slotProps.data.totalStockValue) }} </template>
                         </Column>
 
                         <Column>

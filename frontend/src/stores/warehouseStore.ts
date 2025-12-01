@@ -12,7 +12,9 @@ export const useWarehouseStore = defineStore('warehouse', () => {
     const warehouse = ref<Warehouse>({
         id: 0,
         name: '',
-        location: ''
+        location: '',
+        totalStock: 0,
+        totalStockValue: 0
     });
     const pagination = ref({
         currentPage: 1,
@@ -97,7 +99,9 @@ export const useWarehouseStore = defineStore('warehouse', () => {
         warehouse.value = {
             id: 0,
             name: '',
-            location: ''
+            location: '',
+            totalStock: 0,
+            totalStockValue: 0
         };
     }
 

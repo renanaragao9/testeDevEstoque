@@ -11,6 +11,7 @@ class IndexWarehouseRequest extends BaseFormRequest
     {
         return array_merge(
             $this->paginate(),
+            $this->orderBy(),
             [
                 'search' => ['sometimes', 'string', 'max:255'],
             ]

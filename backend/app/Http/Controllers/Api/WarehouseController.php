@@ -29,6 +29,8 @@ class WarehouseController extends BaseController
 
     public function show(Warehouse $warehouse): JsonResponse
     {
+        $warehouse->load(['stocks.product', 'stocks.stockMovements']);
+
         return $this->successResponse(
             new WarehouseResource($warehouse),
             'Armazém encontrado com sucesso.'

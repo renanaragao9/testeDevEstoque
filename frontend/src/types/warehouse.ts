@@ -2,6 +2,8 @@ export interface Warehouse {
     id: number;
     name: string;
     location: string;
+    totalStock: number;
+    totalStockValue: number;
     createdAt?: string;
 }
 

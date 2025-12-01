@@ -28,7 +28,7 @@ class IndexWarehouseService
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
         $query = $this->warehouse
-            ->with('stocks')
+            ->with(['stocks.product'])
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             });
