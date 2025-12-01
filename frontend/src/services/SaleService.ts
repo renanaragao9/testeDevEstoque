@@ -58,14 +58,6 @@ export class SaleService {
         return response.data;
     }
 
-    static async updateSale(id: number, saleData: Partial<SalePayload>): Promise<{ data: Sale; message: string }> {
-        const payload = this.preparePayload(saleData);
-        const response = await api.put<{ data: Sale; message: string }>(`${this.BASE_URL}/${id}`, payload, {
-            headers: this.getHeaders()
-        });
-        return response.data;
-    }
-
     static async deleteSale(id: number): Promise<{ message: string }> {
         const response = await api.delete<{ message: string }>(`${this.BASE_URL}/${id}`);
         return response.data;

@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Sale\IndexSaleRequest;
 use App\Http\Requests\Sale\StoreSaleRequest;
-use App\Http\Requests\Sale\UpdateSaleRequest;
 use App\Http\Resources\Sale\SaleResource;
 use App\Models\Sale;
 use App\Services\Sale\DeleteSaleService;
 use App\Services\Sale\IndexSaleService;
 use App\Services\Sale\StoreSaleService;
-use App\Services\Sale\UpdateSaleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -48,19 +46,7 @@ class SaleController extends BaseController
         );
     }
 
-    public function update(
-        UpdateSaleRequest $updateSaleRequest,
-        UpdateSaleService $updateSaleService,
-        Sale $sale
-    ): JsonResponse {
-        $data = $updateSaleRequest->validated();
-        $sale = $updateSaleService->run($sale, $data);
 
-        return $this->successResponse(
-            new SaleResource($sale),
-            'Venda atualizada com sucesso.'
-        );
-    }
 
     public function destroy(
         Sale $sale,

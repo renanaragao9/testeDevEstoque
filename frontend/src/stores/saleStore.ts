@@ -73,23 +73,6 @@ export const useSaleStore = defineStore('sale', () => {
         }
     }
 
-    async function updateSale(id: number, payload: SalePayload) {
-        loading.value = true;
-        error.value = null;
-        try {
-            const result = await SaleService.updateSale(id, payload);
-            const index = sales.value.findIndex((sale) => sale.id === id);
-            if (index !== -1) {
-                sales.value[index] = result.data;
-            }
-        } catch (err) {
-            error.value = handleApiError(err, 'Erro ao atualizar venda');
-            throw err;
-        } finally {
-            loading.value = false;
-        }
-    }
-
     async function deleteSale(id: number) {
         loading.value = true;
         error.value = null;
@@ -142,7 +125,6 @@ export const useSaleStore = defineStore('sale', () => {
         statusOptions,
         fetchSales,
         createSale,
-        updateSale,
         deleteSale,
         clearSale,
         addSaleItem,

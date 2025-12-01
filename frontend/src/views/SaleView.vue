@@ -95,13 +95,8 @@ async function saveSale(): Promise<void> {
                 }))
             };
 
-            if (saleStore.sale.id) {
-                await saleStore.updateSale(saleStore.sale.id, payload);
-                toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda atualizada com sucesso', life: 3000 });
-            } else {
-                await saleStore.createSale(payload);
-                toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda criada com sucesso', life: 3000 });
-            }
+            await saleStore.createSale(payload);
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda criada com sucesso', life: 3000 });
 
             saleDialog.value = false;
             saleStore.clearSale();
@@ -130,7 +125,7 @@ async function deleteSale(): Promise<void> {
 
 function openNew(): void {
     saleStore.clearSale();
-    saleStore.addSaleItem(); // Adiciona um item inicial
+    saleStore.addSaleItem();
     submitted.value = false;
     saleDialog.value = true;
 }
@@ -138,21 +133,6 @@ function openNew(): void {
 function hideDialog(): void {
     saleDialog.value = false;
     submitted.value = false;
-}
-
-function editSale(saleData: Sale): void {
-    saleStore.sale = { ...saleData };
-    // Carrega os itens da venda se existirem
-    if (saleData.stockMovements) {
-        saleStore.saleItems = saleData.stockMovements.map((movement) => ({
-            id: movement.id,
-            productId: movement.productId,
-            quantity: movement.quantity
-        }));
-    } else {
-        saleStore.addSaleItem();
-    }
-    saleDialog.value = true;
 }
 
 function confirmDeleteSale(saleData: Sale): void {
@@ -281,7 +261,6 @@ function getStatusLabel(status: string): string {
 
                         <Column>
                             <template #body="slotProps">
-                                <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editSale(slotProps.data)" />
                                 <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteSale(slotProps.data)" />
                             </template>
                         </Column>
@@ -290,7 +269,7 @@ function getStatusLabel(status: string): string {
             </div>
         </div>
 
-        <Dialog v-model:visible="saleDialog" modal header="Detalhes da Venda" :style="{ width: '80vw' }" :maximizable="true">
+        <Dialog v-model:visible="saleDialog" modal header="Nova Venda" :style="{ width: '80vw' }" :maximizable="true">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label for="invoiceNumber" class="font-bold mb-3">Nº Fatura <span class="text-red-500">*</span></label>
