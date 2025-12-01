@@ -73,7 +73,7 @@ export const useSaleStore = defineStore('sale', () => {
             await SaleService.deleteSale(id);
             sales.value = sales.value.filter((sale) => sale.id !== id);
         } catch (err) {
-            error.value = handleApiError(err, 'Erro ao deletar venda');
+            error.value = handleApiError(err, 'Erro ao cancelar venda');
             throw err;
         } finally {
             loading.value = false;

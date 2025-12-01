@@ -56,7 +56,7 @@ class SaleController extends BaseController
 
         return $this->successResponse(
             null,
-            'Venda removida com sucesso.'
+            'Venda cancelada com sucesso.'
         );
     }
 }

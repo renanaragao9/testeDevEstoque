@@ -1,3 +1,9 @@
+export interface SaleProduct {
+    name: string;
+    total: number;
+    averageCost: number;
+}
+
 export interface Sale {
     id: number;
     invoiceNumber: string;
@@ -11,6 +17,7 @@ export interface Sale {
         phone: string;
     };
     stockMovements?: SaleItem[];
+    products?: SaleProduct[];
     createdAt?: string;
 }
 

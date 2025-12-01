@@ -28,7 +28,7 @@ class IndexSaleService
         $orderByDirection = $data['order_by_direction'] ?? 'asc';
 
         $query = $this->sale
-            ->with('customer', 'stockMovements')
+            ->with(['customer', 'stockMovements.stock.product'])
             ->when($search, function ($query) use ($search) {
                 return $query->where('invoice_number', 'like', '%' . $search . '%')
                     ->orWhereHas('customer', function ($q) use ($search) {

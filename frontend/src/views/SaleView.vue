@@ -19,6 +19,7 @@ const orderByDirection = ref<'asc' | 'desc'>('asc');
 const saleDialog = ref(false);
 const deleteSaleDialog = ref(false);
 const submitted = ref(false);
+const expandedRows = ref({});
 
 const toast = useToast();
 
@@ -114,10 +115,10 @@ async function deleteSale(): Promise<void> {
             await saleStore.deleteSale(saleStore.sale.id);
             deleteSaleDialog.value = false;
             saleStore.clearSale();
-            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda deletada com sucesso', life: 3000 });
+            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Venda cancelada com sucesso', life: 3000 });
             await loadSales();
         } catch {
-            toast.add({ severity: 'error', summary: 'Erro', detail: saleStore.error || 'Erro ao deletar venda', life: 3000 });
+            toast.add({ severity: 'error', summary: 'Erro', detail: saleStore.error || 'Erro ao cancelar venda', life: 3000 });
         }
     }
 }
@@ -159,6 +160,25 @@ function formatCurrency(value: number): string {
 function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('pt-BR');
 }
+
+function expandAll(): void {
+    expandedRows.value = saleStore.sales
+        .filter((s) => s.products && s.products.length > 0)
+        .reduce(
+            (acc, sale) => {
+                acc[sale.id] = true;
+                return acc;
+            },
+            {} as Record<number, boolean>
+        );
+}
+
+function collapseAll(): void {
+    expandedRows.value = {};
+}
+
+function onRowExpand(): void {}
+function onRowCollapse(): void {}
 </script>
 
 <template>
@@ -173,6 +193,7 @@ function formatDate(dateString: string): string {
                     </Toolbar>
 
                     <DataTable
+                        v-model:expandedRows="expandedRows"
                         :value="saleStore.sales"
                         dataKey="id"
                         :paginator="true"
@@ -186,15 +207,20 @@ function formatDate(dateString: string): string {
                         :lazy="true"
                         @page="onPageChange"
                         @sort="onSort"
+                        @rowExpand="onRowExpand"
+                        @rowCollapse="onRowCollapse"
                         sortMode="single"
                         :sort-field="orderByColumn"
                         :sort-order="orderByDirection === 'asc' ? 1 : -1"
                         removableSort
+                        tableStyle="min-width: 60rem"
                     >
                         <template #header>
                             <div class="flex flex-wrap gap-2 items-center justify-between">
                                 <span class="text-xl text-900 font-bold">Vendas</span>
                                 <div class="flex gap-2">
+                                    <Button variant="text" icon="pi pi-plus" label="Expandir Todos" @click="expandAll" />
+                                    <Button variant="text" icon="pi pi-minus" label="Recolher Todos" @click="collapseAll" />
                                     <IconField>
                                         <InputIcon>
                                             <i class="pi pi-search" />
@@ -206,6 +232,7 @@ function formatDate(dateString: string): string {
                             </div>
                         </template>
 
+                        <Column expander style="width: 5rem" />
                         <Column field="invoice_number" header="Nº Fatura" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.invoice_number }}
@@ -232,6 +259,29 @@ function formatDate(dateString: string): string {
                                 <Button label="Cancelar" icon="pi pi-times" outlined rounded severity="danger" @click="confirmDeleteSale(slotProps.data)" />
                             </template>
                         </Column>
+
+                        <template #expansion="slotProps">
+                            <div class="p-4">
+                                <h5 class="mb-4">Produtos da venda {{ slotProps.data.invoice_number }}</h5>
+                                <DataTable v-if="slotProps.data.products && slotProps.data.products.length > 0" :value="slotProps.data.products">
+                                    <Column field="name" header="Nome do Produto" sortable></Column>
+                                    <Column field="total" header="Quantidade" sortable>
+                                        <template #body="productSlot">
+                                            <Tag :value="productSlot.data.total" severity="warning" />
+                                        </template>
+                                    </Column>
+                                    <Column field="average_cost" header="Custo Médio" sortable>
+                                        <template #body="productSlot">
+                                            {{ formatCurrency(productSlot.data.average_cost) }}
+                                        </template>
+                                    </Column>
+                                </DataTable>
+                                <div v-else class="text-center py-4">
+                                    <i class="pi pi-inbox text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Nenhum produto encontrado nesta venda</p>
+                                </div>
+                            </div>
+                        </template>
                     </DataTable>
                 </div>
             </div>
@@ -315,11 +365,11 @@ function formatDate(dateString: string): string {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteSaleDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteSaleDialog" modal header="Confirmar Cancelamento" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="saleStore.sale"
-                    >Tem certeza de que deseja excluir a venda <b>{{ saleStore.sale.invoiceNumber }}</b
+                    >Tem certeza de que deseja cancelar a venda <b>{{ saleStore.sale.invoiceNumber }}</b
                     >?</span
                 >
             </div>

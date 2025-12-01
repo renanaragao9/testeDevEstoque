@@ -1,3 +1,9 @@
+export interface PurchaseProduct {
+    name: string;
+    total: number;
+    averageCost: number;
+}
+
 export interface Purchase {
     id: number;
     invoiceNumber: string;
@@ -12,6 +18,7 @@ export interface Purchase {
         address: string;
     };
     stockMovements?: PurchaseItem[];
+    products?: PurchaseProduct[];
     createdAt?: string;
 }
 
