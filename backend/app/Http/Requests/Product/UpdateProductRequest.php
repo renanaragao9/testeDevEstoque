@@ -20,7 +20,7 @@ class UpdateProductRequest extends BaseFormRequest
                 'max:255',
                 Rule::unique('products', 'name')->ignore($productId),
             ],
-            'description' => ['sometimes', 'string', 'max:1000'],
+            'description' => ['nullable', 'string', 'max:1000'],
             'price_sale' => ['sometimes', 'numeric', 'min:0'],
             'product_type_id' => ['sometimes', 'exists:product_types,id'],
             'mark_id' => ['sometimes', 'exists:marks,id'],
