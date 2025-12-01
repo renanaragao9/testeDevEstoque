@@ -21,6 +21,7 @@ const model = ref<MenuItem[]>([
     {
         label: 'Produtos',
         items: [
+            { label: 'Produtos', icon: 'pi pi-fw pi-box', to: '/products' },
             { label: 'Tipos de Produto', icon: 'pi pi-fw pi-tags', to: '/product-types' },
             { label: 'Marcas', icon: 'pi pi-fw pi-bookmark', to: '/marks' },
             { label: 'Especificações', icon: 'pi pi-fw pi-list', to: '/specifications' }
