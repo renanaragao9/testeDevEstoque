@@ -92,10 +92,12 @@ async function onSort(event: DataTableSortEvent): Promise<void> {
 async function saveProduct(): Promise<void> {
     submitted.value = true;
 
-    if (productStore.product.name?.trim() && productStore.product.price_sale > 0 && productStore.product.product_type_id > 0 && productStore.product.mark_id > 0) {
+    const isValid = productStore.product.name?.trim() && productStore.product.price_sale > 0 && productStore.product.product_type_id > 0 && productStore.product.mark_id > 0;
+
+    if (isValid) {
         try {
             const payload = {
-                name: productStore.product.name,
+                name: productStore.product.name.trim(),
                 description: productStore.product.description || '',
                 price_sale: productStore.product.price_sale,
                 product_type_id: productStore.product.product_type_id,
@@ -103,7 +105,9 @@ async function saveProduct(): Promise<void> {
                 specifications: productStore.productSpecifications.filter((spec) => spec.value.trim() !== '')
             };
 
-            if (productStore.product.id) {
+            const isEditing = productStore.product.id && productStore.product.id > 0;
+
+            if (isEditing) {
                 await productStore.updateProduct(productStore.product.id, payload);
                 toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Produto atualizado com sucesso', life: 3000 });
             } else {
@@ -146,8 +150,13 @@ function hideDialog(): void {
 }
 
 async function editProduct(productData: Product): Promise<void> {
-    await productStore.getProductWithSpecifications(productData.id);
-    productDialog.value = true;
+    try {
+        await productStore.getProductWithSpecifications(productData.id);
+        submitted.value = false;
+        productDialog.value = true;
+    } catch {
+        toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao carregar produto', life: 3000 });
+    }
 }
 
 function confirmDeleteProduct(productData: Product): void {
@@ -303,7 +312,6 @@ const availableSpecifications = computed(() => {
                     <Textarea id="description" v-model="productStore.product.description" placeholder="Digite a descrição do produto" fluid />
                 </div>
 
-                <!-- Especificações -->
                 <div class="md:col-span-2">
                     <div class="flex justify-between items-center mb-3">
                         <label class="font-bold">Especificações</label>

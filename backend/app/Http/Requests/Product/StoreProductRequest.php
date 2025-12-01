@@ -15,6 +15,10 @@ class StoreProductRequest extends BaseFormRequest
             'price_sale' => ['required', 'numeric', 'min:0'],
             'product_type_id' => ['required', 'exists:product_types,id'],
             'mark_id' => ['required', 'exists:marks,id'],
+            'specifications' => ['nullable', 'array'],
+            'specifications.*' => ['array'],
+            'specifications.*.specification_id' => ['required_with:specifications.*', 'exists:specifications,id'],
+            'specifications.*.value' => ['required_with:specifications.*', 'string', 'max:255'],
         ];
     }
 
@@ -35,6 +39,13 @@ class StoreProductRequest extends BaseFormRequest
             'product_type_id.exists' => 'O tipo de produto selecionado não existe.',
             'mark_id.required' => 'A marca é obrigatória.',
             'mark_id.exists' => 'A marca selecionada não existe.',
+            'specifications.array' => 'As especificações devem ser um array.',
+            'specifications.*.array' => 'Cada especificação deve ser um array.',
+            'specifications.*.specification_id.required_with' => 'O ID da especificação é obrigatório.',
+            'specifications.*.specification_id.exists' => 'A especificação selecionada não existe.',
+            'specifications.*.value.required_with' => 'O valor da especificação é obrigatório.',
+            'specifications.*.value.string' => 'O valor da especificação deve ser um texto.',
+            'specifications.*.value.max' => 'O valor da especificação não pode ter mais de 255 caracteres.',
         ];
     }
 }

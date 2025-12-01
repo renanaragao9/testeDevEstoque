@@ -29,6 +29,8 @@ class ProductController extends BaseController
 
     public function show(Product $product): JsonResponse
     {
+        $product->load(['productType', 'mark', 'specifications']);
+
         return $this->successResponse(
             new ProductResource($product),
             'Produto encontrado com sucesso.'
