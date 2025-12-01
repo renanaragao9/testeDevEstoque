@@ -26,6 +26,10 @@ const model = ref<MenuItem[]>([
             { label: 'Marcas', icon: 'pi pi-fw pi-bookmark', to: '/marks' },
             { label: 'Especificações', icon: 'pi pi-fw pi-list', to: '/specifications' }
         ]
+    },
+    {
+        label: 'Estoque',
+        items: [{ label: 'Armazéns', icon: 'pi pi-fw pi-building', to: '/warehouses' }]
     }
 ]);
 </script>
