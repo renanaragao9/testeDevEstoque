@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\SaleController;
+use App\Http\Controllers\Api\DashboardController;
 
 Route::prefix('auth')->group(function (): void {
     Route::post('register', [AuthController::class, 'register']);
@@ -102,5 +103,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::post('/', [SaleController::class, 'store']);
         Route::get('/{sale}', [SaleController::class, 'show']);
         Route::delete('/{sale}', [SaleController::class, 'destroy']);
+    });
+
+    Route::prefix('dashboard')->group(function (): void {
+        Route::get('/', [DashboardController::class, 'index']);
+        Route::get('/sales-report', [DashboardController::class, 'salesReport']);
+        Route::get('/general-stats', [DashboardController::class, 'generalStats']);
+        Route::get('/top-selling-products', [DashboardController::class, 'topSellingProducts']);
     });
 });

@@ -52,7 +52,7 @@ const profileMenuItems = ref([
                     </g>
                 </svg>
 
-                <span>Produto Ninja</span>
+                <span>Estoque Ninja</span>
             </router-link>
         </div>
 

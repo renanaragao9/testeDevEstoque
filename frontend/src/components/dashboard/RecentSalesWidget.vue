@@ -2,11 +2,15 @@
 import { ProductService } from '@/services/data/ProductService';
 import { onMounted, ref } from 'vue';
 
-const products = ref(null);
-
-function formatCurrency(value) {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+import type { Product } from '@/services/data/ProductService';
+const products = ref<Product[]>([]);
+interface FormatCurrency {
+    (value: number): string;
 }
+
+const formatCurrency: FormatCurrency = function (value: number): string {
+    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+};
 
 onMounted(() => {
     ProductService.getProductsSmall().then((data) => (products.value = data));
