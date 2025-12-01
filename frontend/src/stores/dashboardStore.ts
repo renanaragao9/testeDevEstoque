@@ -77,6 +77,19 @@ export const useDashboardStore = defineStore('dashboard', () => {
         }
     }
 
+    async function downloadStockExitReport() {
+        loading.value = true;
+        error.value = null;
+        try {
+            await DashboardService.downloadStockExitReport();
+        } catch (err) {
+            error.value = handleApiError(err, 'Erro ao fazer download do relatório');
+            throw err;
+        } finally {
+            loading.value = false;
+        }
+    }
+
     function clearError() {
         error.value = null;
     }
@@ -110,6 +123,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
         fetchSalesReport,
         fetchGeneralStats,
         fetchTopSellingProducts,
+        downloadStockExitReport,
         clearError,
         resetStore
     };

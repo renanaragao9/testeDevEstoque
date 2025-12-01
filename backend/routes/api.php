@@ -110,5 +110,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/sales-report', [DashboardController::class, 'salesReport']);
         Route::get('/general-stats', [DashboardController::class, 'generalStats']);
         Route::get('/top-selling-products', [DashboardController::class, 'topSellingProducts']);
+        Route::get('/export-stock-exit', [DashboardController::class, 'exportStockExit']);
     });
 });

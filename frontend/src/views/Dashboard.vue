@@ -22,6 +22,25 @@ const loadDashboardData = async () => {
     }
 };
 
+const downloadStockReport = async () => {
+    try {
+        await dashboardStore.downloadStockExitReport();
+        toast.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Relatório baixado com sucesso',
+            life: 3000
+        });
+    } catch {
+        toast.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Erro ao fazer download do relatório',
+            life: 5000
+        });
+    }
+};
+
 onMounted(() => {
     loadDashboardData();
 });
@@ -35,7 +54,10 @@ onUnmounted(() => {
     <div class="flex flex-col gap-6">
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">Dashboard</h1>
-            <Button icon="pi pi-refresh" label="Atualizar" :loading="dashboardStore.loading" @click="loadDashboardData" class="p-button-outlined" />
+            <div class="flex gap-2">
+                <Button icon="pi pi-download" label="Exportar Estoque" :loading="dashboardStore.loading" @click="downloadStockReport" class="p-button-success" />
+                <Button icon="pi pi-refresh" label="Atualizar" :loading="dashboardStore.loading" @click="loadDashboardData" class="p-button-outlined" />
+            </div>
         </div>
 
         <div class="grid grid-cols-12 gap-8">
