@@ -6,7 +6,7 @@ Sistema moderno para controle de produtos, vendas, compras e movimentações de 
 
 **Backend:**
 
-- Laravel 12 + PHP 8.2
+- Laravel 12 + PHP 8.3
 - MySQL 8.0
 - Laravel Sanctum (autenticação)
 
