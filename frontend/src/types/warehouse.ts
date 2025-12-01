@@ -1,9 +1,16 @@
+export interface Product {
+    name: string;
+    total: number;
+    averageCost: number;
+}
+
 export interface Warehouse {
     id: number;
     name: string;
     location: string;
     totalStock: number;
     totalStockValue: number;
+    products?: Product[];
     createdAt?: string;
 }
 

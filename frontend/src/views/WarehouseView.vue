@@ -15,6 +15,7 @@ const orderByDirection = ref<'asc' | 'desc'>('asc');
 const warehouseDialog = ref(false);
 const deleteWarehouseDialog = ref(false);
 const submitted = ref(false);
+const expandedRows = ref({});
 
 const toast = useToast();
 
@@ -133,6 +134,25 @@ function formatCurrency(value: number | undefined): string {
     if (!value) return '0,00';
     return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+function expandAll(): void {
+    expandedRows.value = warehouseStore.warehouses
+        .filter((w) => w.products && w.products.length > 0)
+        .reduce(
+            (acc, warehouse) => {
+                acc[warehouse.id] = true;
+                return acc;
+            },
+            {} as Record<number, boolean>
+        );
+}
+
+function collapseAll(): void {
+    expandedRows.value = {};
+}
+
+function onRowExpand(): void {}
+function onRowCollapse(): void {}
 </script>
 
 <template>
@@ -147,6 +167,7 @@ function formatCurrency(value: number | undefined): string {
                     </Toolbar>
 
                     <DataTable
+                        v-model:expandedRows="expandedRows"
                         :value="warehouseStore.warehouses"
                         dataKey="id"
                         :paginator="true"
@@ -160,15 +181,20 @@ function formatCurrency(value: number | undefined): string {
                         :lazy="true"
                         @page="onPageChange"
                         @sort="onSort"
+                        @rowExpand="onRowExpand"
+                        @rowCollapse="onRowCollapse"
                         sortMode="single"
                         :sort-field="orderByColumn"
                         :sort-order="orderByDirection === 'asc' ? 1 : -1"
                         removableSort
+                        tableStyle="min-width: 60rem"
                     >
                         <template #header>
                             <div class="flex flex-wrap gap-2 items-center justify-between">
                                 <span class="text-xl text-900 font-bold">Armazéns</span>
                                 <div class="flex gap-2">
+                                    <Button variant="text" icon="pi pi-plus" label="Expandir Todos" @click="expandAll" />
+                                    <Button variant="text" icon="pi pi-minus" label="Recolher Todos" @click="collapseAll" />
                                     <IconField>
                                         <InputIcon>
                                             <i class="pi pi-search" />
@@ -180,6 +206,7 @@ function formatCurrency(value: number | undefined): string {
                             </div>
                         </template>
 
+                        <Column expander style="width: 5rem" />
                         <Column field="name" header="Nome" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.name }}
@@ -205,6 +232,27 @@ function formatCurrency(value: number | undefined): string {
                                 <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteWarehouse(slotProps.data)" />
                             </template>
                         </Column>
+
+                        <template #expansion="slotProps">
+                            <div class="p-4">
+                                <h5 class="mb-4">Produtos no armazém {{ slotProps.data.name }}</h5>
+                                <DataTable v-if="slotProps.data.products && slotProps.data.products.length > 0" :value="slotProps.data.products">
+                                    <Column field="name" header="Nome do Produto" sortable></Column>
+                                    <Column field="total" header="Total em Estoque" sortable>
+                                        <template #body="productSlot">
+                                            <Tag :value="productSlot.data.total" severity="info" />
+                                        </template>
+                                    </Column>
+                                    <Column field="average_cost" header="Custo Médio" sortable>
+                                        <template #body="productSlot"> R$ {{ formatCurrency(productSlot.data.average_cost) }} </template>
+                                    </Column>
+                                </DataTable>
+                                <div v-else class="text-center py-4">
+                                    <i class="pi pi-inbox text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Nenhum produto encontrado neste armazém</p>
+                                </div>
+                            </div>
+                        </template>
                     </DataTable>
                 </div>
             </div>

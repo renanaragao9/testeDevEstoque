@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Warehouse;
 
+use App\Services\Warehouse\CalculateWarehouseProductsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,10 @@ class WarehouseResource extends JsonResource
                         return $stock->relationLoaded('product') && $stock->product ? (float) $stock->product->price_sale : 0.0;
                     });
             }, 0.0),
+            'products' => $this->whenLoaded('stocks', function () {
+                $calculateProductsService = new CalculateWarehouseProductsService();
+                return $calculateProductsService->run($this->resource);
+            }, []),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
