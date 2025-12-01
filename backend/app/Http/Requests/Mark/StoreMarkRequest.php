@@ -11,8 +11,8 @@ class StoreMarkRequest extends BaseFormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:255', 'unique:marks,name'],
-            'description' => ['sometimes', 'string', 'max:1000'],
-            'country' => ['sometimes', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'country' => ['nullable', 'string', 'max:255'],
         ];
     }
 

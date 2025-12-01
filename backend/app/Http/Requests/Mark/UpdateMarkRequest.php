@@ -20,8 +20,8 @@ class UpdateMarkRequest extends BaseFormRequest
                 'max:255',
                 Rule::unique('marks', 'name')->ignore($markId),
             ],
-            'description' => ['sometimes', 'string', 'max:1000'],
-            'country' => ['sometimes', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
+            'country' => ['nullable', 'string', 'max:255'],
         ];
     }
 
