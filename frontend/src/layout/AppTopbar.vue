@@ -14,8 +14,12 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout() as LayoutContext
 const authStore = useAuthStore();
 const profileMenu = ref();
 
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 const handleLogout = async () => {
     await authStore.logout();
+    router.push('/login');
 };
 
 const profileMenuItems = ref([
