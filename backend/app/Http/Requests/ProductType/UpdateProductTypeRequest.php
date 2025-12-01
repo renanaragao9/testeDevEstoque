@@ -14,13 +14,12 @@ class UpdateProductTypeRequest extends BaseFormRequest
 
         return [
             'name' => [
-                'sometimes',
                 'string',
                 'min:3',
                 'max:255',
                 Rule::unique('product_types', 'name')->ignore($productTypeId),
             ],
-            'description' => ['sometimes', 'string', 'max:1000'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 

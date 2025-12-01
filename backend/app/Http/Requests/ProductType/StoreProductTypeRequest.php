@@ -11,7 +11,7 @@ class StoreProductTypeRequest extends BaseFormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:255', 'unique:product_types,name'],
-            'description' => ['sometimes', 'string', 'max:1000'],
+            'description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 

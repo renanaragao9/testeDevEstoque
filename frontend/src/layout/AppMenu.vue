@@ -17,6 +17,10 @@ const model = ref<MenuItem[]>([
     {
         label: 'Home',
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+    },
+    {
+        label: 'Produtos',
+        items: [{ label: 'Tipos de Produto', icon: 'pi pi-fw pi-tags', to: '/product-types' }]
     }
 ]);
 </script>
