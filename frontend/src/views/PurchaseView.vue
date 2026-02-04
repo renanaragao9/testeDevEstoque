@@ -236,21 +236,25 @@ function onRowCollapse(): void {}
                         </template>
 
                         <Column expander style="width: 5rem" />
+
                         <Column field="invoice_number" header="Nº Fatura" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.invoice_number }}
                             </template>
                         </Column>
+
                         <Column field="purchase_date" header="Data" sortable>
                             <template #body="slotProps">
                                 {{ formatDate(slotProps.data.purchase_date) }}
                             </template>
                         </Column>
+
                         <Column field="supplier.name" header="Fornecedor" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.supplier?.name || '-' }}
                             </template>
                         </Column>
+
                         <Column field="total_amount" header="Total" sortable>
                             <template #body="slotProps">
                                 {{ formatCurrency(slotProps.data.total_amount) }}
@@ -290,11 +294,11 @@ function onRowCollapse(): void {}
             </div>
         </div>
 
-        <Dialog v-model:visible="purchaseDialog" modal header="Detalhes da Compra" :style="{ width: '80vw' }" :maximizable="true">
+        <Dialog v-model:visible="purchaseDialog" modal maximizable header="Detalhes da Compra" :style="{ width: '80vw' }">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div>
                     <label for="invoiceNumber" class="font-bold mb-3">Nº Fatura <span class="text-red-500">*</span></label>
-                    <InputText id="invoiceNumber" v-model.trim="purchaseStore.purchase.invoiceNumber" required autofocus :invalid="submitted && !purchaseStore.purchase.invoiceNumber" placeholder="Digite o número da fatura" fluid />
+                    <InputText id="invoiceNumber" class="mt-2" v-model.trim="purchaseStore.purchase.invoiceNumber" required autofocus :invalid="submitted && !purchaseStore.purchase.invoiceNumber" placeholder="Digite o número da fatura" fluid />
                     <small v-if="submitted && !purchaseStore.purchase.invoiceNumber" class="text-red-500">Número da fatura é obrigatório.</small>
                 </div>
 
@@ -302,6 +306,7 @@ function onRowCollapse(): void {}
                     <label for="purchaseDate" class="font-bold mb-3">Data da Compra <span class="text-red-500">*</span></label>
                     <Calendar
                         id="purchaseDate"
+                        class="mt-2"
                         :modelValue="purchaseStore.purchase.purchaseDate ? new Date(purchaseStore.purchase.purchaseDate) : null"
                         @update:modelValue="(date: Date | null) => (purchaseStore.purchase.purchaseDate = date ? date.toISOString().split('T')[0] : '')"
                         dateFormat="dd/mm/yy"
@@ -316,6 +321,7 @@ function onRowCollapse(): void {}
                     <label for="supplier" class="font-bold mb-3">Fornecedor <span class="text-red-500">*</span></label>
                     <Dropdown
                         id="supplier"
+                        class="mt-2"
                         v-model="purchaseStore.purchase.supplierId"
                         :options="supplierStore.supplierOptions"
                         optionLabel="label"
@@ -337,13 +343,24 @@ function onRowCollapse(): void {}
                 <div v-for="(item, index) in purchaseStore.purchaseItems" :key="index" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end mb-4 p-4 border rounded">
                     <div>
                         <label :for="`product-${index}`" class="font-bold mb-3">Produto <span class="text-red-500">*</span></label>
-                        <Dropdown :id="`product-${index}`" v-model="item.productId" :options="productStore.productOptions" optionLabel="label" optionValue="value" :invalid="submitted && !item.productId" placeholder="Selecione um produto" fluid />
+                        <Dropdown
+                            :id="`product-${index}`"
+                            class="mt-2"
+                            v-model="item.productId"
+                            :options="productStore.productOptions"
+                            optionLabel="label"
+                            optionValue="value"
+                            :invalid="submitted && !item.productId"
+                            placeholder="Selecione um produto"
+                            fluid
+                        />
                     </div>
 
                     <div>
                         <label :for="`warehouse-${index}`" class="font-bold mb-3">Armazém <span class="text-red-500">*</span></label>
                         <Dropdown
                             :id="`warehouse-${index}`"
+                            class="mt-2"
                             v-model="item.warehouseId"
                             :options="warehouseStore.warehouseOptions"
                             optionLabel="label"
@@ -356,7 +373,7 @@ function onRowCollapse(): void {}
 
                     <div>
                         <label :for="`quantity-${index}`" class="font-bold mb-3">Quantidade <span class="text-red-500">*</span></label>
-                        <InputNumber :id="`quantity-${index}`" v-model="item.quantity" :min="1" :invalid="submitted && (!item.quantity || item.quantity <= 0)" placeholder="Quantidade" fluid />
+                        <InputNumber :id="`quantity-${index}`" class="mt-2" v-model="item.quantity" :min="1" :invalid="submitted && (!item.quantity || item.quantity <= 0)" placeholder="Quantidade" fluid />
                     </div>
 
                     <div>
@@ -372,6 +389,7 @@ function onRowCollapse(): void {}
                     <label for="totalAmount" class="font-bold mb-3">Valor Total <span class="text-red-500">*</span></label>
                     <InputNumber
                         id="totalAmount"
+                        class="mt-2"
                         v-model="purchaseStore.purchase.totalAmount"
                         :minFractionDigits="2"
                         :maxFractionDigits="2"
@@ -392,7 +410,7 @@ function onRowCollapse(): void {}
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deletePurchaseDialog" modal header="Confirmar Cancelamento" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deletePurchaseDialog" modal maximizable header="Confirmar Cancelamento" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="purchaseStore.purchase"

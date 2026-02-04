@@ -181,11 +181,13 @@ function confirmDeleteMark(markData: Mark): void {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="description" header="Descrição" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.description || '-' }}
                             </template>
                         </Column>
+
                         <Column field="country" header="País" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.country || '-' }}
@@ -203,22 +205,22 @@ function confirmDeleteMark(markData: Mark): void {
             </div>
         </div>
 
-        <Dialog v-model:visible="markDialog" modal header="Detalhes da Marca" :style="{ width: '50vw' }">
+        <Dialog v-model:visible="markDialog" modal maximizable header="Detalhes da Marca" :style="{ width: '50vw' }">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="markStore.mark.name" required autofocus :invalid="submitted && !markStore.mark.name" placeholder="Digite o nome da marca" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="markStore.mark.name" required autofocus :invalid="submitted && !markStore.mark.name" placeholder="Digite o nome da marca" fluid />
                     <small v-if="submitted && !markStore.mark.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="description" class="font-bold mb-3">Descrição</label>
-                    <Textarea id="description" v-model="markStore.mark.description" placeholder="Digite a descrição" fluid />
+                    <Textarea id="description" class="mt-2" v-model="markStore.mark.description" placeholder="Digite a descrição" fluid />
                 </div>
 
                 <div>
                     <label for="country" class="font-bold mb-3">País</label>
-                    <InputText id="country" v-model="markStore.mark.country" placeholder="Digite o país de origem" fluid />
+                    <InputText id="country" class="mt-2" v-model="markStore.mark.country" placeholder="Digite o país de origem" fluid />
                 </div>
             </div>
 
@@ -228,7 +230,7 @@ function confirmDeleteMark(markData: Mark): void {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteMarkDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteMarkDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="markStore.mark"

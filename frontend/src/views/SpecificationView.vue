@@ -188,6 +188,7 @@ function getStatusSeverity(isActive: boolean): 'success' | 'danger' {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="is_active" header="Status" sortable>
                             <template #body="slotProps">
                                 <Tag :value="getStatusLabel(slotProps.data.is_active)" :severity="getStatusSeverity(slotProps.data.is_active)" />
@@ -205,18 +206,18 @@ function getStatusSeverity(isActive: boolean): 'success' | 'danger' {
             </div>
         </div>
 
-        <Dialog v-model:visible="specificationDialog" modal header="Detalhes da Especificação" :style="{ width: '50vw' }">
+        <Dialog v-model:visible="specificationDialog" modal maximizable header="Detalhes da Especificação" :style="{ width: '50vw' }">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="specificationStore.specification.name" required autofocus :invalid="submitted && !specificationStore.specification.name" placeholder="Digite o nome da especificação" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="specificationStore.specification.name" required autofocus :invalid="submitted && !specificationStore.specification.name" placeholder="Digite o nome da especificação" fluid />
                     <small v-if="submitted && !specificationStore.specification.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="is_active" class="font-bold mb-3">Status</label>
                     <div class="flex items-center">
-                        <InputSwitch id="is_active" v-model="specificationStore.specification.is_active" />
+                        <InputSwitch id="is_active" class="mt-2" v-model="specificationStore.specification.is_active" />
                         <label for="is_active" class="ml-2">{{ specificationStore.specification.is_active ? 'Ativo' : 'Inativo' }}</label>
                     </div>
                 </div>
@@ -228,7 +229,7 @@ function getStatusSeverity(isActive: boolean): 'success' | 'danger' {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteSpecificationDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteSpecificationDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="specificationStore.specification"

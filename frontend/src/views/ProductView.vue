@@ -275,7 +275,7 @@ const availableSpecifications = computed(() => {
             </div>
         </div>
 
-        <Dialog v-model:visible="productDialog" modal header="Detalhes do Produto" :style="{ width: '70vw' }">
+        <Dialog v-model:visible="productDialog" modal maximizable header="Detalhes do Produto" :style="{ width: '70vw' }">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
@@ -336,12 +336,14 @@ const availableSpecifications = computed(() => {
                     </div>
 
                     <div v-if="productStore.productSpecifications.length > 0" class="space-y-2">
-                        <div v-for="spec in productStore.productSpecifications" :key="spec.specification_id" class="flex items-center gap-2">
+                        <div v-for="spec in productStore.productSpecifications" :key="spec.specification_id">
                             <div class="flex-1">
                                 <label class="text-sm font-medium">{{ getSpecificationName(spec.specification_id) }}</label>
-                                <InputText class="mt-2" v-model="spec.value" placeholder="Digite o valor da especificação" fluid />
+                                <div class="flex items-center gap-2 mt-2">
+                                    <InputText class="flex-1" v-model="spec.value" placeholder="Digite o valor da especificação" fluid />
+                                    <Button icon="pi pi-trash" severity="danger" outlined @click="removeSpecification(spec.specification_id)" />
+                                </div>
                             </div>
-                            <Button icon="pi pi-trash" severity="danger" outlined @click="removeSpecification(spec.specification_id)" />
                         </div>
                     </div>
 
@@ -355,7 +357,7 @@ const availableSpecifications = computed(() => {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteProductDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteProductDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="productStore.product"

@@ -181,11 +181,13 @@ function confirmDeleteCustomer(customerData: Customer): void {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="email" header="Email" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.email }}
                             </template>
                         </Column>
+
                         <Column field="phone" header="Telefone" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.phone }}
@@ -203,23 +205,23 @@ function confirmDeleteCustomer(customerData: Customer): void {
             </div>
         </div>
 
-        <Dialog v-model:visible="customerDialog" modal header="Detalhes do Cliente" :style="{ width: '50vw' }">
+        <Dialog v-model:visible="customerDialog" modal maximizable header="Detalhes do Cliente" :style="{ width: '50vw' }">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="customerStore.customer.name" required autofocus :invalid="submitted && !customerStore.customer.name" placeholder="Digite o nome do cliente" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="customerStore.customer.name" required autofocus :invalid="submitted && !customerStore.customer.name" placeholder="Digite o nome do cliente" fluid />
                     <small v-if="submitted && !customerStore.customer.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="email" class="font-bold mb-3">Email <span class="text-red-500">*</span></label>
-                    <InputText id="email" v-model.trim="customerStore.customer.email" type="email" required :invalid="submitted && !customerStore.customer.email" placeholder="Digite o email do cliente" fluid />
+                    <InputText id="email" class="mt-2" v-model.trim="customerStore.customer.email" type="email" required :invalid="submitted && !customerStore.customer.email" placeholder="Digite o email do cliente" fluid />
                     <small v-if="submitted && !customerStore.customer.email" class="text-red-500">Email é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="phone" class="font-bold mb-3">Telefone <span class="text-red-500">*</span></label>
-                    <InputText id="phone" v-model.trim="customerStore.customer.phone" required :invalid="submitted && !customerStore.customer.phone" placeholder="Digite o telefone do cliente" fluid />
+                    <InputText id="phone" class="mt-2" v-model.trim="customerStore.customer.phone" required :invalid="submitted && !customerStore.customer.phone" placeholder="Digite o telefone do cliente" fluid />
                     <small v-if="submitted && !customerStore.customer.phone" class="text-red-500">Telefone é obrigatório.</small>
                 </div>
             </div>
@@ -230,7 +232,7 @@ function confirmDeleteCustomer(customerData: Customer): void {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteCustomerDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteCustomerDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="customerStore.customer"

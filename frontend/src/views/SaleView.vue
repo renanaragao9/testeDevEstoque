@@ -244,21 +244,25 @@ function onRowCollapse(): void {}
                         </template>
 
                         <Column expander style="width: 5rem" />
+
                         <Column field="invoice_number" header="Nº Fatura" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.invoice_number }}
                             </template>
                         </Column>
+
                         <Column field="sale_date" header="Data" sortable>
                             <template #body="slotProps">
                                 {{ formatDate(slotProps.data.sale_date) }}
                             </template>
                         </Column>
+
                         <Column field="customer.name" header="Cliente" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.customer?.name || '-' }}
                             </template>
                         </Column>
+
                         <Column field="total_amount" header="Total" sortable>
                             <template #body="slotProps">
                                 {{ formatCurrency(slotProps.data.total_amount) }}
@@ -298,11 +302,11 @@ function onRowCollapse(): void {}
             </div>
         </div>
 
-        <Dialog v-model:visible="saleDialog" modal header="Nova Venda" :style="{ width: '80vw' }" :maximizable="true">
+        <Dialog v-model:visible="saleDialog" modal maximizable header="Nova Venda" :style="{ width: '80vw' }">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label for="invoiceNumber" class="font-bold mb-3">Nº Fatura <span class="text-red-500">*</span></label>
-                    <InputText id="invoiceNumber" v-model.trim="saleStore.sale.invoiceNumber" required autofocus :invalid="submitted && !saleStore.sale.invoiceNumber" placeholder="Digite o número da fatura" fluid />
+                    <InputText id="invoiceNumber" class="mt-2" v-model.trim="saleStore.sale.invoiceNumber" required autofocus :invalid="submitted && !saleStore.sale.invoiceNumber" placeholder="Digite o número da fatura" fluid />
                     <small v-if="submitted && !saleStore.sale.invoiceNumber" class="text-red-500">Número da fatura é obrigatório.</small>
                 </div>
 
@@ -310,6 +314,7 @@ function onRowCollapse(): void {}
                     <label for="saleDate" class="font-bold mb-3">Data da Venda <span class="text-red-500">*</span></label>
                     <Calendar
                         id="saleDate"
+                        class="mt-2"
                         :modelValue="saleStore.sale.saleDate ? new Date(saleStore.sale.saleDate) : null"
                         @update:modelValue="(date: Date | null) => (saleStore.sale.saleDate = date ? date.toISOString().split('T')[0] : '')"
                         dateFormat="dd/mm/yy"
@@ -322,7 +327,7 @@ function onRowCollapse(): void {}
 
                 <div>
                     <label for="customer" class="font-bold mb-3">Cliente</label>
-                    <Dropdown id="customer" v-model="saleStore.sale.customerId" :options="customerStore.customerOptions" optionLabel="label" optionValue="value" placeholder="Selecione um cliente" showClear fluid />
+                    <Dropdown id="customer" class="mt-2" v-model="saleStore.sale.customerId" :options="customerStore.customerOptions" optionLabel="label" optionValue="value" placeholder="Selecione um cliente" showClear fluid />
                 </div>
             </div>
 
@@ -337,6 +342,7 @@ function onRowCollapse(): void {}
                         <label :for="`product-${index}`" class="font-bold mb-3">Produto <span class="text-red-500">*</span></label>
                         <Dropdown
                             :id="`product-${index}`"
+                            class="mt-2"
                             v-model="item.productId"
                             :options="productStore.productSalesOptions"
                             optionLabel="label"
@@ -349,7 +355,7 @@ function onRowCollapse(): void {}
 
                     <div>
                         <label :for="`quantity-${index}`" class="font-bold mb-3">Quantidade <span class="text-red-500">*</span></label>
-                        <InputNumber :id="`quantity-${index}`" v-model="item.quantity" :min="1" :invalid="submitted && (!item.quantity || item.quantity <= 0)" placeholder="Quantidade" fluid />
+                        <InputNumber :id="`quantity-${index}`" class="mt-2" v-model="item.quantity" :min="1" :invalid="submitted && (!item.quantity || item.quantity <= 0)" placeholder="Quantidade" fluid />
                     </div>
 
                     <div>
@@ -365,6 +371,7 @@ function onRowCollapse(): void {}
                     <label for="totalAmount" class="font-bold mb-3">Valor Total <span class="text-red-500">*</span></label>
                     <InputNumber
                         id="totalAmount"
+                        class="mt-2"
                         v-model="saleStore.sale.totalAmount"
                         :minFractionDigits="2"
                         :maxFractionDigits="2"
@@ -385,7 +392,7 @@ function onRowCollapse(): void {}
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteSaleDialog" modal header="Confirmar Cancelamento" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteSaleDialog" modal maximizable header="Confirmar Cancelamento" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="saleStore.sale"

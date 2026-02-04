@@ -180,6 +180,7 @@ function confirmDeleteProductType(productTypeData: ProductType): void {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="description" header="Descrição" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.description || '-' }}
@@ -197,17 +198,17 @@ function confirmDeleteProductType(productTypeData: ProductType): void {
             </div>
         </div>
 
-        <Dialog v-model:visible="productTypeDialog" modal header="Detalhes do Tipo de Produto" :style="{ width: '50vw' }">
+        <Dialog v-model:visible="productTypeDialog" modal maximizable header="Detalhes do Tipo de Produto" :style="{ width: '50vw' }">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="productTypeStore.productType.name" required autofocus :invalid="submitted && !productTypeStore.productType.name" placeholder="Digite o nome do tipo" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="productTypeStore.productType.name" required autofocus :invalid="submitted && !productTypeStore.productType.name" placeholder="Digite o nome do tipo" fluid />
                     <small v-if="submitted && !productTypeStore.productType.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="description" class="font-bold mb-3">Descrição</label>
-                    <Textarea id="description" v-model="productTypeStore.productType.description" placeholder="Digite a descrição" fluid />
+                    <Textarea id="description" class="mt-2" v-model="productTypeStore.productType.description" placeholder="Digite a descrição" fluid />
                 </div>
             </div>
 
@@ -217,7 +218,7 @@ function confirmDeleteProductType(productTypeData: ProductType): void {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteProductTypeDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteProductTypeDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="productTypeStore.productType"

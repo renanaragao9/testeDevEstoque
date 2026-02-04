@@ -207,21 +207,25 @@ function onRowCollapse(): void {}
                         </template>
 
                         <Column expander style="width: 5rem" />
+
                         <Column field="name" header="Nome" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="location" header="Localização" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.location }}
                             </template>
                         </Column>
+
                         <Column field="totalStock" header="Total Estoque" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.totalStock || 0 }}
                             </template>
                         </Column>
+
                         <Column field="totalStockValue" header="Valor Total" sortable>
                             <template #body="slotProps"> R$ {{ formatCurrency(slotProps.data.totalStockValue) }} </template>
                         </Column>
@@ -258,17 +262,17 @@ function onRowCollapse(): void {}
             </div>
         </div>
 
-        <Dialog v-model:visible="warehouseDialog" modal header="Detalhes do Armazém" :style="{ width: '50vw' }">
+        <Dialog v-model:visible="warehouseDialog" modal maximizable header="Detalhes do Armazém" :style="{ width: '50vw' }">
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="warehouseStore.warehouse.name" required autofocus :invalid="submitted && !warehouseStore.warehouse.name" placeholder="Digite o nome do armazém" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="warehouseStore.warehouse.name" required autofocus :invalid="submitted && !warehouseStore.warehouse.name" placeholder="Digite o nome do armazém" fluid />
                     <small v-if="submitted && !warehouseStore.warehouse.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="location" class="font-bold mb-3">Localização <span class="text-red-500">*</span></label>
-                    <InputText id="location" v-model.trim="warehouseStore.warehouse.location" required :invalid="submitted && !warehouseStore.warehouse.location" placeholder="Digite a localização do armazém" fluid />
+                    <InputText id="location" class="mt-2" v-model.trim="warehouseStore.warehouse.location" required :invalid="submitted && !warehouseStore.warehouse.location" placeholder="Digite a localização do armazém" fluid />
                     <small v-if="submitted && !warehouseStore.warehouse.location" class="text-red-500">Localização é obrigatória.</small>
                 </div>
             </div>
@@ -279,7 +283,7 @@ function onRowCollapse(): void {}
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteWarehouseDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteWarehouseDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="warehouseStore.warehouse"

@@ -182,16 +182,19 @@ function confirmDeleteSupplier(supplierData: Supplier): void {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="email" header="Email" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.email }}
                             </template>
                         </Column>
+
                         <Column field="phone" header="Telefone" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.phone }}
                             </template>
                         </Column>
+
                         <Column field="address" header="Endereço" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.address }}
@@ -209,29 +212,29 @@ function confirmDeleteSupplier(supplierData: Supplier): void {
             </div>
         </div>
 
-        <Dialog v-model:visible="supplierDialog" modal header="Detalhes do Fornecedor" :style="{ width: '60vw' }">
+        <Dialog v-model:visible="supplierDialog" modal maximizable header="Detalhes do Fornecedor" :style="{ width: '60vw' }">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="supplierStore.supplier.name" required autofocus :invalid="submitted && !supplierStore.supplier.name" placeholder="Digite o nome do fornecedor" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="supplierStore.supplier.name" required autofocus :invalid="submitted && !supplierStore.supplier.name" placeholder="Digite o nome do fornecedor" fluid />
                     <small v-if="submitted && !supplierStore.supplier.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="email" class="font-bold mb-3">Email <span class="text-red-500">*</span></label>
-                    <InputText id="email" v-model.trim="supplierStore.supplier.email" type="email" required :invalid="submitted && !supplierStore.supplier.email" placeholder="Digite o email do fornecedor" fluid />
+                    <InputText id="email" class="mt-2" v-model.trim="supplierStore.supplier.email" type="email" required :invalid="submitted && !supplierStore.supplier.email" placeholder="Digite o email do fornecedor" fluid />
                     <small v-if="submitted && !supplierStore.supplier.email" class="text-red-500">Email é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="phone" class="font-bold mb-3">Telefone <span class="text-red-500">*</span></label>
-                    <InputText id="phone" v-model.trim="supplierStore.supplier.phone" required :invalid="submitted && !supplierStore.supplier.phone" placeholder="Digite o telefone do fornecedor" fluid />
+                    <InputText id="phone" class="mt-2" v-model.trim="supplierStore.supplier.phone" required :invalid="submitted && !supplierStore.supplier.phone" placeholder="Digite o telefone do fornecedor" fluid />
                     <small v-if="submitted && !supplierStore.supplier.phone" class="text-red-500">Telefone é obrigatório.</small>
                 </div>
 
                 <div class="md:col-span-1">
                     <label for="address" class="font-bold mb-3">Endereço <span class="text-red-500">*</span></label>
-                    <Textarea id="address" v-model="supplierStore.supplier.address" required :invalid="submitted && !supplierStore.supplier.address" placeholder="Digite o endereço do fornecedor" fluid rows="3" />
+                    <Textarea id="address" class="mt-2" v-model="supplierStore.supplier.address" required :invalid="submitted && !supplierStore.supplier.address" placeholder="Digite o endereço do fornecedor" fluid rows="3" />
                     <small v-if="submitted && !supplierStore.supplier.address" class="text-red-500">Endereço é obrigatório.</small>
                 </div>
             </div>
@@ -242,7 +245,7 @@ function confirmDeleteSupplier(supplierData: Supplier): void {
             </template>
         </Dialog>
 
-        <Dialog v-model:visible="deleteSupplierDialog" modal header="Confirmar Exclusão" :style="{ width: '450px' }">
+        <Dialog v-model:visible="deleteSupplierDialog" modal maximizable header="Confirmar Exclusão" :style="{ width: '450px' }">
             <div class="flex items-center">
                 <i class="pi pi-exclamation-triangle text-red-500 mr-3" style="font-size: 2rem" />
                 <span v-if="supplierStore.supplier"
