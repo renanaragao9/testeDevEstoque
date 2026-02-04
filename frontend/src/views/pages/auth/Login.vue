@@ -43,7 +43,7 @@ const handleLogin = async () => {
                                 />
                             </g>
                         </svg>
-                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Bem-vindo ao Estoque Ninja!</div>
+                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Bem-vindo ao Renan's Store!</div>
                         <span class="text-muted-color font-medium">Entre para continuar</span>
                     </div>
 
@@ -59,7 +59,7 @@ const handleLogin = async () => {
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Lembrar-me</label>
                             </div>
-                            <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>
+                            <!-- <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span> -->
                         </div>
                         <Button label="Entrar" class="w-full" :loading="authStore.isLoading" @click="handleLogin"></Button>
                         <div v-if="authStore.error" class="text-red-500 mt-4">{{ authStore.error.message }}</div>

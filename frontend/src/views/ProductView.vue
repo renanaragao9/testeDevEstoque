@@ -245,16 +245,19 @@ const availableSpecifications = computed(() => {
                                 {{ slotProps.data.name }}
                             </template>
                         </Column>
+
                         <Column field="price_sale" header="Preço" sortable>
                             <template #body="slotProps">
                                 {{ formatPrice(slotProps.data.price_sale) }}
                             </template>
                         </Column>
+
                         <Column field="productType.name" header="Tipo" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.productType?.name || '-' }}
                             </template>
                         </Column>
+
                         <Column field="mark.name" header="Marca" sortable>
                             <template #body="slotProps">
                                 {{ slotProps.data.mark?.name || '-' }}
@@ -276,20 +279,21 @@ const availableSpecifications = computed(() => {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="name" class="font-bold mb-3">Nome <span class="text-red-500">*</span></label>
-                    <InputText id="name" v-model.trim="productStore.product.name" required autofocus :invalid="submitted && !productStore.product.name" placeholder="Digite o nome do produto" fluid />
+                    <InputText id="name" class="mt-2" v-model.trim="productStore.product.name" required autofocus :invalid="submitted && !productStore.product.name" placeholder="Digite o nome do produto" fluid />
                     <small v-if="submitted && !productStore.product.name" class="text-red-500">Nome é obrigatório.</small>
                 </div>
 
                 <div>
                     <label for="price_sale" class="font-bold mb-3">Preço de Venda <span class="text-red-500">*</span></label>
-                    <InputNumber id="price_sale" v-model="productStore.product.price_sale" mode="currency" currency="BRL" locale="pt-BR" :invalid="submitted && productStore.product.price_sale <= 0" placeholder="0,00" fluid />
+                    <InputNumber id="price_sale" class="mt-2" v-model="productStore.product.price_sale" mode="currency" currency="BRL" locale="pt-BR" :invalid="submitted && productStore.product.price_sale <= 0" placeholder="0,00" fluid />
                     <small v-if="submitted && productStore.product.price_sale <= 0" class="text-red-500">Preço deve ser maior que zero.</small>
                 </div>
 
                 <div>
                     <label for="product_type" class="font-bold mb-3">Tipo de Produto <span class="text-red-500">*</span></label>
-                    <Dropdown
+                    <Select
                         id="product_type"
+                        class="mt-2"
                         v-model="productStore.product.product_type_id"
                         :options="productTypeOptions"
                         optionLabel="label"
@@ -303,20 +307,30 @@ const availableSpecifications = computed(() => {
 
                 <div>
                     <label for="mark" class="font-bold mb-3">Marca <span class="text-red-500">*</span></label>
-                    <Dropdown id="mark" v-model="productStore.product.mark_id" :options="markOptions" optionLabel="label" optionValue="value" placeholder="Selecione uma marca" :invalid="submitted && productStore.product.mark_id <= 0" fluid />
+                    <Select
+                        id="mark"
+                        class="mt-2"
+                        v-model="productStore.product.mark_id"
+                        :options="markOptions"
+                        optionLabel="label"
+                        optionValue="value"
+                        placeholder="Selecione uma marca"
+                        :invalid="submitted && productStore.product.mark_id <= 0"
+                        fluid
+                    />
                     <small v-if="submitted && productStore.product.mark_id <= 0" class="text-red-500">Marca é obrigatória.</small>
                 </div>
 
                 <div class="md:col-span-2">
                     <label for="description" class="font-bold mb-3">Descrição</label>
-                    <Textarea id="description" v-model="productStore.product.description" placeholder="Digite a descrição do produto" fluid />
+                    <Textarea id="description" class="mt-2" v-model="productStore.product.description" placeholder="Digite a descrição do produto" fluid />
                 </div>
 
                 <div class="md:col-span-2">
                     <div class="flex justify-between items-center mb-3">
                         <label class="font-bold">Especificações</label>
                         <div class="flex gap-2">
-                            <Dropdown v-model="selectedSpecification" :options="availableSpecifications" optionLabel="label" placeholder="Adicionar especificação" class="w-48" />
+                            <Select v-model="selectedSpecification" :options="availableSpecifications" optionLabel="label" placeholder="Adicionar especificação" class="w-48" />
                             <Button icon="pi pi-plus" @click="addSpecification" :disabled="!selectedSpecification" />
                         </div>
                     </div>
@@ -325,7 +339,7 @@ const availableSpecifications = computed(() => {
                         <div v-for="spec in productStore.productSpecifications" :key="spec.specification_id" class="flex items-center gap-2">
                             <div class="flex-1">
                                 <label class="text-sm font-medium">{{ getSpecificationName(spec.specification_id) }}</label>
-                                <InputText v-model="spec.value" placeholder="Digite o valor da especificação" fluid />
+                                <InputText class="mt-2" v-model="spec.value" placeholder="Digite o valor da especificação" fluid />
                             </div>
                             <Button icon="pi pi-trash" severity="danger" outlined @click="removeSpecification(spec.specification_id)" />
                         </div>

@@ -56,7 +56,7 @@ const profileMenuItems = ref([
                     </g>
                 </svg>
 
-                <span>Estoque Ninja</span>
+                <span>Renan's Store</span>
             </router-link>
         </div>
 
